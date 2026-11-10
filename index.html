@@ -164,7 +164,7 @@ function wrapTitle(text, width, firstIndent, bold) {
   return lines;
 }
 function measureNode(d) {
-  const bold = d.depth <= 1;
+  const bold = d.depth <= 1 || (d.depth === 2 && d.parent && d.parent.data.group);
   const right = d.kids ? 48 : 10;
   const indent = badgeW(d.data) ? badgeW(d.data) + 6 : 0;
   d.lines = wrapTitle(d.data.name, BOX_W - 10 - right, indent, bold);
@@ -418,7 +418,7 @@ function load(data) {
   document.getElementById('stats').textContent =
     `${(all.length - 1).toLocaleString()} pages · ${maxDepth} level${maxDepth === 1 ? '' : 's'} deep`;
   renderLegend(maxDepth);
-  setDepth(1, true);
+  setDepth(2, false); fitLeft();
 }
 
 function renderLegend(maxDepth) {
@@ -483,14 +483,14 @@ function update(source) {
   chip.append('text').attr('x', 17).attr('y', 11.5);
 
   const merged = enter.merge(node);
-  merged.classed('folder', d => !d.data.inSitemap).classed('match', d => d.match).classed('selected', d => d === selected).classed('context', d => !!d.data.context);
+  merged.classed('folder', d => !d.data.inSitemap && !d.data.group).classed('match', d => d.match).classed('selected', d => d === selected).classed('context', d => !!d.data.context);
   merged.select('g.badge').style('display', d => (badgeText(d.data) ? null : 'none')).attr('transform', d => `translate(8,${-d.h / 2 + PAD_Y + 0.5})`);
   merged.select('g.badge rect').attr('width', d => badgeW(d.data)).attr('fill', d => badgeColour(d.data));
   merged.select('g.badge text').attr('x', d => badgeW(d.data) / 2).text(d => badgeText(d.data));
   merged.select('title').text(d => d.data.raw || d.data.name);
   merged.select('rect.box').attr('y', d => -d.h / 2).attr('height', d => d.h).attr('fill', d => nodeStyle(d).fill).attr('stroke', d => nodeStyle(d).stroke);
   merged.select('text.label').attr('fill', d => nodeStyle(d).text)
-    .attr('font-weight', d => (d.depth <= 1 ? 600 : 400))
+    .attr('font-weight', d => (d.depth <= 1 || (d.parent && d.parent.data.group) ? 600 : 400))
     .each(function (d) {
       const t = d3.select(this); t.selectAll('tspan').remove();
       const top = -d.h / 2 + PAD_Y + 11;
@@ -525,6 +525,16 @@ function fit() {
   svg.transition().duration(300).call(zoom.transform, t);
 }
 
+// Place the tree near the left edge, vertically centred, so it unfolds to the right
+function fitLeft() {
+  const nodes = root.descendants();
+  const x0 = d3.min(nodes, d => d.x - d.h / 2) - 10, x1 = d3.max(nodes, d => d.x + d.h / 2) + 10;
+  const [w, h] = viewSize();
+  const k = Math.max(0.3, Math.min(1, (h - 120) / (x1 - x0)));
+  const t = d3.zoomIdentity.translate(40 - k * root.y, h / 2 - k * (x0 + x1) / 2 + 20).scale(k);
+  svg.transition().duration(300).call(zoom.transform, t);
+}
+
 function centreOn(d) {
   const [w, h] = viewSize();
   const k = Math.max(d3.zoomTransform(svg.node()).k, 0.8);
@@ -541,7 +551,9 @@ function filterTree(n, v, isRoot) {
   const t = terrOf(n);
   if (v === 'national') {
     if (t.length && !isRoot) return null;
-    return { ...n, children: (n.children || []).map(c => filterTree(c, v)).filter(Boolean) };
+    const kidsN = (n.children || []).map(c => filterTree(c, v)).filter(Boolean);
+    if (n.group && !kidsN.length) return null;
+    return { ...n, children: kidsN };
   }
   if (t.includes(v)) return copyTree(n, { context: false });
   const kids = (n.children || []).map(c => filterTree(c, v)).filter(Boolean);
@@ -609,9 +621,10 @@ const TODAY = new Date();
 function ageDays(n) { if (!n.lastmod) return null; const t = new Date(n.lastmod); return isNaN(t) ? null : Math.max(0, Math.floor((TODAY - t) / 86400000)); }
 function ageBin(n) { const a = ageDays(n); return a == null ? NO_DATE : AGE_BINS.find(b => a <= b.max); }
 function nodeStyle(d) {
+  if (d.data.group) return GROUP_STYLE;
   if (colourMode === 'age') return ageBin(d.data);
   if (colourMode === 'ia') return !d.data.inSitemap ? IA_STYLES.folder : d.data.inIA ? IA_STYLES.yes : IA_STYLES.no;
-  return lv(d.depth);
+  return lv(levelOf(d));
 }
 function fmtDate(v) { const t = new Date(v); return isNaN(t) ? '' : t.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); }
 function fmtAge(days) {
@@ -668,8 +681,34 @@ function buildFromSitemap(pages, ia) {
     n.children.forEach(walk);
   };
   walk(root);
+  return groupTopLevel(root);
+}
+
+/* ---------- Top-level categories ----------
+   Each first-level folder in the URL is placed in one of these groups.
+   To move a section, change the list of URL folders below. */
+const GROUPS = [
+  { name: 'Core site: cancer.org.au', slugs: ['about-us', 'accessibility', 'cancer-information', 'health-professionals', 'disclaimer', 'get-involved',
+      'privacy-collection-statement', 'privacy-collection-statement-donations-fundraising', 'privacy-policy', 'recall-statement', 'support-and-services', 'types-of-cancer'] },
+  { name: 'Campaign sites', slugs: ['bowelscreening', 'end-the-trend', 'save-your-skin'] },
+  { name: 'Microsites', slugs: ['nscaw2026', 'iheard', 'unmasking-big-tobacco'] },
+  { name: 'Territory labels (TAS, NT)', slugs: ['tas', 'nt'] }
+];
+const OTHER_GROUP = 'Other (not yet categorised)';
+function groupTopLevel(root) {
+  const slugOf = n => (n.raw || '').split('/').filter(Boolean)[0] || '';
+  const groups = GROUPS.map(g => ({ name: g.name, group: true, children: [], slugs: g.slugs }));
+  const other = { name: OTHER_GROUP, group: true, children: [], slugs: [] };
+  root.children.forEach(c => {
+    const g = groups.find(x => x.slugs.includes(slugOf(c).toLowerCase())) || other;
+    g.children.push(c);
+  });
+  groups.forEach(g => g.children.sort((a, b) => g.slugs.indexOf(slugOf(a)) - g.slugs.indexOf(slugOf(b)) || a.name.localeCompare(b.name)));
+  root.children = [...groups, other].filter(g => g.children.length);
   return root;
 }
+const levelOf = d => d.depth - (d.ancestors().some(a => a.data.group) ? 1 : 0);
+const GROUP_STYLE = { fill: '#2b3440', stroke: '#2b3440', text: '#ffffff' };
 
 /* ---------- Detail panel ---------- */
 function select(d) {
@@ -684,7 +723,8 @@ function select(d) {
     if (v instanceof Node) dd.appendChild(v); else dd.textContent = v;
     info.append(dt, dd);
   };
-  add('Level', d.depth === 0 ? 'Top' : String(d.depth));
+  if (d.data.group) add('Category', 'Grouping in this tool, not a page');
+  else add('Level', d.depth === 0 ? 'Top' : String(levelOf(d)));
   if (d.data.inSitemap) add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'No date in sitemap');
   else add('In sitemap', 'No. This is a folder in the URL, not a page in the sitemap');
   if (d.data.inSitemap) add('In IA sheet', d.data.inIA ? 'Yes' : 'No');
@@ -745,7 +785,7 @@ function showMatch() {
 }
 
 /* ---------- Controls ---------- */
-document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => setDepth(+b.dataset.depth, true));
+document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => { setDepth(+b.dataset.depth + 1, false); fitLeft(); });
 document.getElementById('fit').onclick = fit;
 document.getElementById('sampleBtn').onclick = () => { loadNote = 'sample data'; setData(buildTree(sampleRows())); };
 
