@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sitemap explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root { --ink:#1b1f24; --muted:#5f6b7a; --line:#d9dee5; --bg:#f6f7f9; --accent:#2f6fe0; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; font-family:Inter,system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+  body { display:flex; flex-direction:column; }
+  header { background:#fff; border-bottom:1px solid var(--line); padding:12px 16px; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; }
+  h1 { font-size:17px; margin:0 8px 0 0; font-weight:600; }
+  .stats { color:var(--muted); font-size:13px; }
+  .group { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .group label { font-size:12px; color:var(--muted); margin-right:2px; }
+  button, .filebtn { font:inherit; font-size:13px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:6px 10px; border-radius:6px; cursor:pointer; }
+  button:hover, .filebtn:hover { border-color:#aab4c2; }
+  button.primary, .filebtn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .search { position:relative; }
+  .search input { font:inherit; font-size:13px; padding:6px 10px; border:1px solid var(--line); border-radius:6px; width:240px; }
+  .search span { font-size:12px; color:var(--muted); margin-left:6px; }
+  .spacer { flex:1; }
+  main { flex:1; position:relative; overflow:hidden; }
+  svg { width:100%; height:100%; display:block; cursor:grab; }
+  svg:active { cursor:grabbing; }
+  .node { cursor:pointer; }
+  .node rect.box { stroke-width:1; }
+  .node.match rect.box { stroke:#e5484d; stroke-width:2.5; }
+  .node.context { opacity:.45; }
+  .node.folder rect.box { stroke-dasharray:4 3; }
+  #legend b.sw { display:inline-block; width:14px; height:10px; border-radius:2px; border:1px solid rgba(0,0,0,.2); }
+  .node .badge text { font-size:9px; font-weight:700; fill:#fff; text-anchor:middle; letter-spacing:.3px; }
+  button.active { background:var(--ink); border-color:var(--ink); color:#fff; }
+  #legend .pill { color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:6px; }
+  .node.selected rect.box { stroke:var(--ink); stroke-width:2.5; }
+  .node text { font-size:12px; pointer-events:none; }
+  .chip rect { fill:#fff; stroke:rgba(0,0,0,.18); }
+  .chip text { font-size:10.5px; font-weight:600; fill:#3b4552; text-anchor:middle; }
+  path.link { fill:none; stroke:#b8c1cd; stroke-width:1.2; }
+  #panel { position:absolute; right:16px; bottom:16px; width:340px; max-width:calc(100% - 32px); background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; box-shadow:0 4px 18px rgba(0,0,0,.08); font-size:13px; display:none; }
+  #panel h2 { font-size:15px; margin:0 0 6px; }
+  #panel .crumb { color:var(--muted); font-size:12px; margin-bottom:10px; line-height:1.45; }
+  #panel dl { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:0 0 10px; }
+  #panel dt { color:var(--muted); }
+  #panel dd { margin:0; word-break:break-all; }
+  #panel .row { display:flex; gap:6px; flex-wrap:wrap; }
+  #panel .close { position:absolute; top:8px; right:10px; border:none; background:none; font-size:18px; color:var(--muted); padding:2px 6px; }
+  #legend { position:absolute; left:16px; bottom:16px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:12px; display:flex; gap:10px; flex-wrap:wrap; max-width:calc(100% - 32px); }
+  #legend span { display:inline-flex; align-items:center; gap:5px; }
+  #legend i { width:14px; height:10px; border-radius:2px; display:inline-block; border:1px solid rgba(0,0,0,.2); }
+  #help { position:absolute; left:16px; top:12px; color:var(--muted); font-size:12px; background:rgba(246,247,249,.9); padding:4px 6px; border-radius:6px; }
+  #modal { position:fixed; inset:0; background:rgba(20,25,32,.45); display:none; align-items:center; justify-content:center; z-index:10; }
+  #modal .card { background:#fff; border-radius:10px; padding:18px; width:min(680px, 94vw); }
+  #modal h3 { margin:0 0 6px; font-size:16px; }
+  #modal p { margin:0 0 10px; color:var(--muted); font-size:13px; line-height:1.5; }
+  #modal textarea { width:100%; height:260px; font-family:ui-monospace,Menlo,monospace; font-size:12px; border:1px solid var(--line); border-radius:6px; padding:8px; }
+  #modal .row { display:flex; justify-content:flex-end; gap:8px; margin-top:10px; }
+  #msg { font-size:12px; color:#b42318; }
+  #drop { position:absolute; inset:0; background:rgba(47,111,224,.08); border:3px dashed var(--accent); display:none; align-items:center; justify-content:center; font-size:18px; color:var(--accent); pointer-events:none; }
+  input[type=file] { display:none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sitemap explorer</h1>
+  <span class="stats" id="stats"></span>
+  <div class="spacer"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="Search pages… (Enter for next)">
+    <span id="qcount"></span>
+  </div>
+  <div class="group" id="versions"></div>
+  <div class="group">
+    <label>Show levels</label>
+    <button data-depth="1">1</button>
+    <button data-depth="2">2</button>
+    <button data-depth="3">3</button>
+    <button data-depth="99">All</button>
+    <button id="fit">Fit to screen</button>
+  </div>
+  <div class="group" id="colourBy">
+    <label>Colour by</label>
+    <button data-mode="age">Last updated</button>
+    <button data-mode="ia">In IA sheet</button>
+    <button data-mode="level">Level</button>
+  </div>
+  <div class="group">
+    <label class="filebtn primary" for="file" style="display:none">Load spreadsheet</label>
+    <input id="file" type="file" accept=".xlsx,.xls,.csv,.tsv,.txt">
+    <button id="pasteBtn" style="display:none">Paste</button>
+    <button id="refreshBtn">Reload</button>
+    <button id="sampleBtn" style="display:none">Sample</button>
+  </div>
+</header>
+<main id="main">
+  <svg id="svg"><g id="zoomLayer"><g id="links"></g><g id="nodes"></g></g></svg>
+  <div id="help">Click a page to open or close it. Drag to move. Scroll to zoom.</div>
+  <div id="legend"></div>
+  <div id="panel">
+    <button class="close" id="panelClose" aria-label="Close">×</button>
+    <h2 id="pTitle"></h2>
+    <div class="crumb" id="pCrumb"></div>
+    <dl id="pInfo"></dl>
+    <div class="row">
+      <button id="pExpand">Open everything below</button>
+      <button id="pCollapse">Close everything below</button>
+    </div>
+  </div>
+  <div id="drop" style="display:none!important"></div>
+</main>
+
+<div id="modal">
+  <div class="card">
+    <h3>Paste from your spreadsheet</h3>
+    <p>Select the level columns in Excel or Google Sheets (column A = level 1, B = level 2 and so on), copy, and paste below. Each row is one page. Earlier columns on a row can be filled in or left blank. A header row is optional.</p>
+    <textarea id="pasteArea" placeholder="Types of cancer&#9;Lymphoma&#9;Diagnosing lymphoma&#9;Tests for lymphoma"></textarea>
+    <div class="row"><span id="msg"></span><div class="spacer"></div><button id="pasteCancel">Cancel</button><button class="primary" id="pasteGo">Build tree</button></div>
+  </div>
+</div>
+
+<script>
+/* ===== SETTINGS =====
+   SITEMAP_JSON: the sitemap snapshot, refreshed daily by the GitHub Action in this repo.
+   SHEET_CSV_URL: the IA Google Sheet ("Publish to web" CSV link). Used for page titles,
+   TAS/NT tags and the "In IA sheet" comparison. Leave empty to skip. */
+const SITEMAP_JSON = 'data/sitemap.json';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMJtMUMnxWwtMgzKg1oVP4faKt0VIIT8aLSkfLFbudAPy5rej7ixpgEcevEcZqEsTTu_KuYVjZPaHL/pub?gid=630510010&single=true&output=csv';
+/* ==================== */
+
+const COLS = 10, BOX_W = 220, BOX_H = 26, COL_W = 272, LINE_H = 15, PAD_Y = 6, MAX_LINES = 3;
+
+/* Wrap a page title onto up to MAX_LINES lines that fit the box. */
+const measureCtx = document.createElement('canvas').getContext('2d');
+function textWidth(t, bold) { measureCtx.font = `${bold ? 600 : 400} 12px Inter, system-ui, sans-serif`; return measureCtx.measureText(t).width; }
+function wrapTitle(text, width, firstIndent, bold) {
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = '';
+  const avail = () => width - (lines.length === 0 ? firstIndent : 0);
+  for (let i = 0; i < words.length; i++) {
+    const trial = line ? line + ' ' + words[i] : words[i];
+    if (textWidth(trial, bold) <= avail() || !line) { line = trial; }
+    else { lines.push(line); line = words[i]; }
+    // break a single word that is wider than the box
+    while (textWidth(line, bold) > avail() && line.length > 1) {
+      let cut = line.length - 1;
+      while (cut > 1 && textWidth(line.slice(0, cut) + '-', bold) > avail()) cut--;
+      lines.push(line.slice(0, cut) + '-'); line = line.slice(cut);
+    }
+  }
+  if (line) lines.push(line);
+  if (lines.length > MAX_LINES) {
+    const kept = lines.slice(0, MAX_LINES);
+    let last = kept[MAX_LINES - 1] + '…';
+    while (textWidth(last, bold) > width && last.length > 2) last = last.slice(0, -2) + '…';
+    kept[MAX_LINES - 1] = last;
+    return kept;
+  }
+  return lines;
+}
+function measureNode(d) {
+  const bold = d.depth <= 1;
+  const right = d.kids ? 48 : 10;
+  const indent = badgeW(d.data) ? badgeW(d.data) + 6 : 0;
+  d.lines = wrapTitle(d.data.name, BOX_W - 10 - right, indent, bold);
+  d.h = Math.max(BOX_H, PAD_Y * 2 + d.lines.length * LINE_H);
+}
+const LEVELS = [
+  { name:'Home',     fill:'#111111', stroke:'#111111', text:'#ffffff' },
+  { name:'Level 1',  fill:'#c9dafc', stroke:'#7aa2f0', text:'#0b2a5b' },
+  { name:'Level 2',  fill:'#fff8db', stroke:'#f0d36e', text:'#3d3200' },
+  { name:'Level 3',  fill:'#fde98a', stroke:'#d9b22a', text:'#3d3200' },
+  { name:'Level 4',  fill:'#e3f4e1', stroke:'#8cc489', text:'#18381a' },
+  { name:'Level 5',  fill:'#f3e4fb', stroke:'#c39be0', text:'#3a1a4d' },
+  { name:'Level 6',  fill:'#fde4e1', stroke:'#e79a92', text:'#4d1a14' },
+  { name:'Level 7+', fill:'#e2f3f7', stroke:'#86c3d3', text:'#0f3640' }
+];
+const lv = d => LEVELS[Math.min(d, LEVELS.length - 1)];
+const TERR_COLOURS = { TAS:'#1f7a4d', NT:'#c2581b' };
+const terrOf = n => (n.tags || []).flatMap(t => t.split('/')).map(t => t.trim().toUpperCase()).filter(Boolean);
+const badgeText = n => [...new Set(terrOf(n))].join('/');
+const badgeColour = n => { const t = [...new Set(terrOf(n))]; return t.length === 1 ? (TERR_COLOURS[t[0]] || '#555') : '#5b4bb7'; };
+const badgeCtx = document.createElement('canvas').getContext('2d');
+const badgeW = n => { const t = badgeText(n); if (!t) return 0; badgeCtx.font = '700 9px Inter, system-ui, sans-serif'; return Math.ceil(badgeCtx.measureText(t).width + t.length * 0.3 + 12); };
+
+/* ---------- Sample data (from the current site structure board) ---------- */
+const SAMPLE = `Types of cancer
+  Acute leukaemia
+  Anal cancer
+  Bladder cancer
+  Bowel cancer
+  Brain tumours
+  Breast cancer
+  Cancer of unknown primary (CUP)
+  Cervical cancer
+  Chronic leukaemia
+  Eye melanoma
+  Gallbladder and bile duct cancers
+  Head and neck cancers
+  Kidney cancer
+  Liver cancer
+  Lung cancer
+  Lymphoma
+    About lymphoma
+    Lymphoma symptoms and risk factors
+    Diagnosing lymphoma
+      Tests for lymphoma
+    Lymphoma treatment
+      Chemotherapy for lymphoma
+      Radiation therapy for lymphoma
+      Other drug therapies for lymphoma
+      Stem cell transplant for lymphoma
+    Life after treatment for lymphoma
+    Questions to ask your doctor about lymphoma
+  Melanoma
+    About melanoma
+    Signs and risk factors of melanoma
+    Diagnosing melanoma
+    Treatment for early melanoma
+    Treatment for advanced melanoma
+    Sun protection
+    Life after treatment for melanoma
+    Questions to ask your doctor about melanoma
+  Mesothelioma
+  Myeloma
+  Neuroendocrine tumours (NETs)
+  Oesophageal cancer
+  Ovarian cancer
+  Pancreatic cancer
+  Primary bone cancer
+  Prostate cancer
+  Rare or less common cancers
+  Skin cancer
+Cancer treatments
+  Chemotherapy
+    About chemotherapy
+    Common questions about chemotherapy
+    Preparing for chemotherapy
+    Chemotherapy treatment
+    Safety precautions for chemotherapy
+    Managing side effects of chemotherapy treatment
+    Other drug therapies
+    Life after chemotherapy
+    Questions to ask your doctor about chemotherapy
+  Hormone therapy
+  Immunotherapy
+  Radiation therapy
+  Surgery
+  Targeted therapy
+  Clinical trials and research
+Managing side effects
+  Breast prostheses and reconstruction
+  Changes in thinking and memory
+  Fatigue
+  Fertility and cancer
+  Hair loss
+  Heart health and cancer
+  Lymphoedema
+  Mouth health and cancer treatment
+  Pain
+  Peripheral neuropathy
+  Sex, intimacy and cancer
+  Taste and smell changes
+Living and coping with cancer
+  Emotions and cancer
+  Complementary therapies
+  Exercise for people living with cancer
+  Nutrition for people living with cancer
+  Talking to kids about cancer
+  Cancer and your finances
+  Cancer, work and you
+  Cancer in the workplace
+  Cancer care and your rights
+  Protecting your health information
+Caring for someone with cancer
+  Your role as a carer
+  How will you feel as a carer?
+  How relationships can change
+  Caring for yourself
+Advanced cancer
+  Living with advanced cancer
+  Palliative care
+  Facing end of life
+  Caring for someone with advanced cancer
+  Grief
+Life after cancer
+  Living well after cancer
+  Just finished treatment
+  Late effects of cancer treatment
+  Living with metastatic cancer
+  Life after cancer: rural
+Understanding cancer
+  Just diagnosed
+  What is cancer?
+  How cancer is treated
+  Making treatment decisions
+  Questions to ask your doctor
+  Looking after yourself
+  Life after treatment
+  Glossary
+  Just diagnosed: rural`;
+
+function sampleRows() {
+  return SAMPLE.split('\n').map(line => {
+    const depth = (line.match(/^ */)[0].length) / 2;
+    const row = new Array(depth).fill('');
+    row.push(line.trim());
+    return row;
+  });
+}
+
+/* ---------- Spreadsheet rows -> tree ---------- */
+const clean = v => (v == null ? '' : String(v).trim());
+const isUrl = s => /^https?:\/\//i.test(s) || /^\/\S*$/.test(s);
+function labelFor(s) {
+  if (!isUrl(s)) return s;
+  try {
+    const u = new URL(s, 'https://example.invalid');
+    const segs = u.pathname.split('/').filter(Boolean);
+    if (!segs.length) return 'Home';
+    let t = decodeURIComponent(segs[segs.length - 1]).replace(/\.(html?|aspx?|php)$/i, '').replace(/[-_]+/g, ' ').trim();
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  } catch (e) { return s; }
+}
+
+function buildTree(rows) {
+  const width = Math.max(0, ...rows.map(r => (r ? r.length : 0)));
+  const head = (rows[0] || []).map(clean);
+  const isLevelHead = c => /^(level|lvl|l)\s*\d+$/i.test(c);
+  const isUrlHead = c => /\b(url|link|address)\b/i.test(c);
+  let start = 0, urlCol = -1, levelCols = [];
+  if (head.some(c => isLevelHead(c) || isUrlHead(c))) {
+    start = 1;
+    urlCol = head.findIndex(isUrlHead);
+    levelCols = head.map((c, j) => j).filter(j => isLevelHead(head[j]));
+  }
+  if (urlCol < 0 && width > 1) {
+    // No header: treat the last column as links if it is mostly full URLs and the first column is not
+    const colVals = j => rows.slice(start).map(r => clean((r || [])[j])).filter(Boolean);
+    const urlShare = v => (v.length ? v.filter(x => /^https?:\/\//i.test(x)).length / v.length : 0);
+    const last = colVals(width - 1), first = colVals(0);
+    if (urlShare(last) > 0.8 && last.length > (rows.length - start) * 0.5 && urlShare(first) < 0.5) urlCol = width - 1;
+  }
+  if (!levelCols.length) levelCols = Array.from({ length: Math.min(width, 12) }, (_, j) => j).filter(j => j !== urlCol);
+
+  const top = { name:'Home', children:[] };
+  const index = new Map();
+  let path = [];
+  // If the first page row fills only the first level column, that page is the site root (e.g. "Homepage").
+  // Values in that column on later rows are then tags, not new top-level pages.
+  let rootMode = false, firstRow = -1;
+  for (let r = start; r < rows.length; r++) {
+    const row = rows[r] || [];
+    const filled = levelCols.filter(col => clean(row[col]));
+    if (!filled.length) continue;
+    firstRow = r;
+    rootMode = filled.length === 1 && filled[0] === levelCols[0];
+    break;
+  }
+  for (let r = start; r < rows.length; r++) {
+    const row = rows[r] || [];
+    const cells = levelCols.map(col => clean(row[col]));
+    // After the root row, a value in the first column is a site version tag (e.g. TAS, NT), not a page.
+    const tags = [];
+    if (rootMode && r !== firstRow && cells[0]) { tags.push(cells[0]); cells[0] = ''; }
+    // The page is the end of the first unbroken run of filled cells. Text further right, after a blank cell, is a note.
+    const runStart = cells.findIndex(Boolean);
+    if (runStart < 0) continue;
+    let deepest = runStart;
+    while (deepest + 1 < cells.length && cells[deepest + 1]) deepest++;
+    const notes = cells.slice(deepest + 1).filter(Boolean);
+    const next = [];
+    for (let k = 0; k <= deepest; k++) next[k] = (k >= runStart ? cells[k] : '') || path[k] || '(untitled)';
+    path = next;
+    let parent = top, key = '';
+    for (let k = 0; k <= deepest; k++) {
+      key += '\u0001' + path[k];
+      let n = index.get(key);
+      if (!n) {
+        n = { name: labelFor(path[k]), raw: path[k], url: isUrl(path[k]) ? path[k] : null, children: [] };
+        parent.children.push(n);
+        index.set(key, n);
+      }
+      parent = n;
+    }
+    if (urlCol >= 0 && clean(row[urlCol]) && !parent.url) parent.url = clean(row[urlCol]);
+    if (tags.length) parent.tags = [...new Set([...(parent.tags || []), ...tags])];
+    if (notes.length) parent.notes = [...(parent.notes || []), ...notes];
+  }
+  if (top.children.length === 1) return top.children[0];
+  return top;
+}
+
+/* ---------- Rendering ---------- */
+const svg = d3.select('#svg'), layer = d3.select('#zoomLayer');
+const gLinks = d3.select('#links'), gNodes = d3.select('#nodes');
+const zoom = d3.zoom().scaleExtent([0.05, 2.5]).on('zoom', e => layer.attr('transform', e.transform));
+svg.call(zoom).on('dblclick.zoom', null);
+const layout = d3.tree().nodeSize([1, COL_W]).separation((a, b) => (a.h + b.h) / 2 + (a.parent === b.parent ? 7 : 16));
+
+let root = null, all = [], uid = 0, selected = null, matches = [], matchIdx = 0;
+
+function load(data) {
+  root = d3.hierarchy(data, d => (d.children && d.children.length ? d.children : null));
+  root.sum(() => 1);
+  all = root.descendants();
+  all.forEach(d => { d.id = ++uid; d.kids = d.children || null; d.match = false; measureNode(d); });
+  root.x0 = 0; root.y0 = 0;
+  selected = null; hidePanel();
+  document.getElementById('q').value = ''; document.getElementById('qcount').textContent = '';
+  gNodes.selectAll('*').remove(); gLinks.selectAll('*').remove();
+  const maxDepth = d3.max(all, d => d.depth);
+  document.getElementById('stats').textContent =
+    `${(all.length - 1).toLocaleString()} pages · ${maxDepth} level${maxDepth === 1 ? '' : 's'} deep`;
+  renderLegend(maxDepth);
+  setDepth(1, true);
+}
+
+function renderLegend(maxDepth) {
+  const el = document.getElementById('legend'); el.innerHTML = '';
+  if (colourMode !== 'level') {
+    const items = colourMode === 'age' ? [...AGE_BINS, NO_DATE] : [IA_STYLES.yes, IA_STYLES.no, IA_STYLES.folder];
+    items.forEach(it => {
+      const n = all.filter(d => nodeStyle(d) === it).length;
+      const s = document.createElement('span'); const sw = document.createElement('b'); sw.className = 'sw';
+      sw.style.background = it.fill; sw.style.borderColor = it.stroke;
+      s.appendChild(sw); s.appendChild(document.createTextNode(`${it.label} (${n})`)); el.appendChild(s);
+    });
+    return;
+  }
+  for (let i = 0; i <= Math.min(maxDepth, LEVELS.length - 1); i++) {
+    const s = document.createElement('span');
+    const sw = document.createElement('i');
+    sw.style.background = LEVELS[i].fill; sw.style.borderColor = LEVELS[i].stroke;
+    s.appendChild(sw); s.appendChild(document.createTextNode(i === 0 ? root.data.name : LEVELS[i].name));
+    el.appendChild(s);
+  }
+  if (sourceData) [...territories(sourceData)].sort().forEach(t => {
+    const s = document.createElement('span');
+    const p = document.createElement('b'); p.className = 'pill'; p.textContent = t; p.style.background = TERR_COLOURS[t] || '#555';
+    s.appendChild(p); s.appendChild(document.createTextNode(t === 'TAS' ? 'Tasmania page' : t === 'NT' ? 'Northern Territory page' : t + ' page'));
+    el.appendChild(s);
+  });
+}
+
+function setDepth(n, refit) {
+  all.forEach(d => { if (d.kids) d.children = d.depth < n ? d.kids : null; });
+  update(root);
+  if (refit) fit();
+}
+
+function toggle(d) { if (!d.kids) return; d.children = d.children ? null : d.kids; update(d); }
+
+const trunc = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+const linkPath = (s, t) => {
+  const sx = s.y + BOX_W, mx = (sx + t.y) / 2;
+  return `M${sx},${s.x}C${mx},${s.x} ${mx},${t.x} ${t.y},${t.x}`;
+};
+
+function update(source) {
+  layout(root);
+  const nodes = root.descendants(), links = root.links();
+  const dur = nodes.length > 700 ? 0 : 250;
+  const sx = source.x0 ?? source.x, sy = source.y0 ?? source.y;
+
+  const node = gNodes.selectAll('g.node').data(nodes, d => d.id);
+  const enter = node.enter().append('g').attr('class', 'node')
+    .attr('transform', `translate(${sy},${sx})`).attr('opacity', 0)
+    .on('click', (e, d) => { e.stopPropagation(); toggle(d); select(d); });
+  enter.append('title');
+  enter.append('rect').attr('class', 'box').attr('width', BOX_W).attr('rx', 5);
+  const badge = enter.append('g').attr('class', 'badge').attr('transform', 'translate(6,-6)');
+  badge.append('rect').attr('height', 14).attr('rx', 7);
+  badge.append('text').attr('y', 10.3);
+  enter.append('text').attr('class', 'label');
+  const chip = enter.append('g').attr('class', 'chip').attr('transform', `translate(${BOX_W - 40},${-8})`);
+  chip.append('rect').attr('width', 34).attr('height', 16).attr('rx', 8);
+  chip.append('text').attr('x', 17).attr('y', 11.5);
+
+  const merged = enter.merge(node);
+  merged.classed('folder', d => !d.data.inSitemap).classed('match', d => d.match).classed('selected', d => d === selected).classed('context', d => !!d.data.context);
+  merged.select('g.badge').style('display', d => (badgeText(d.data) ? null : 'none')).attr('transform', d => `translate(8,${-d.h / 2 + PAD_Y + 0.5})`);
+  merged.select('g.badge rect').attr('width', d => badgeW(d.data)).attr('fill', d => badgeColour(d.data));
+  merged.select('g.badge text').attr('x', d => badgeW(d.data) / 2).text(d => badgeText(d.data));
+  merged.select('title').text(d => d.data.raw || d.data.name);
+  merged.select('rect.box').attr('y', d => -d.h / 2).attr('height', d => d.h).attr('fill', d => nodeStyle(d).fill).attr('stroke', d => nodeStyle(d).stroke);
+  merged.select('text.label').attr('fill', d => nodeStyle(d).text)
+    .attr('font-weight', d => (d.depth <= 1 ? 600 : 400))
+    .each(function (d) {
+      const t = d3.select(this); t.selectAll('tspan').remove();
+      const top = -d.h / 2 + PAD_Y + 11;
+      d.lines.forEach((ln, i) => {
+        t.append('tspan').attr('x', 10 + (i === 0 && badgeW(d.data) ? badgeW(d.data) + 6 : 0)).attr('y', top + i * LINE_H).text(ln);
+      });
+    });
+  merged.select('g.chip').style('display', d => (d.kids ? null : 'none'));
+  merged.select('g.chip text').text(d => (d.children ? '−' : '+' + (d.value - 1)));
+  merged.transition().duration(dur).attr('transform', d => `translate(${d.y},${d.x})`).attr('opacity', 1);
+  node.exit().transition().duration(dur).attr('transform', `translate(${source.y},${source.x})`).attr('opacity', 0).remove();
+
+  const link = gLinks.selectAll('path.link').data(links, d => d.target.id);
+  const lEnter = link.enter().append('path').attr('class', 'link')
+    .attr('d', () => linkPath({ x: sx, y: sy }, { x: sx, y: sy + BOX_W }));
+  lEnter.merge(link).transition().duration(dur).attr('d', d => linkPath(d.source, d.target));
+  link.exit().transition().duration(dur)
+    .attr('d', () => linkPath({ x: source.x, y: source.y }, { x: source.x, y: source.y + BOX_W })).remove();
+
+  nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+}
+
+function viewSize() { const r = document.getElementById('main').getBoundingClientRect(); return [r.width, r.height]; }
+
+function fit() {
+  const nodes = root.descendants();
+  const x0 = d3.min(nodes, d => d.x - d.h / 2) - 10, x1 = d3.max(nodes, d => d.x + d.h / 2) + 10;
+  const y0 = d3.min(nodes, d => d.y), y1 = d3.max(nodes, d => d.y) + BOX_W;
+  const [w, h] = viewSize();
+  const k = Math.max(0.05, Math.min(1.2, (w - 60) / (y1 - y0), (h - 100) / (x1 - x0)));
+  const t = d3.zoomIdentity.translate(w / 2 - k * (y0 + y1) / 2, h / 2 - k * (x0 + x1) / 2).scale(k);
+  svg.transition().duration(300).call(zoom.transform, t);
+}
+
+function centreOn(d) {
+  const [w, h] = viewSize();
+  const k = Math.max(d3.zoomTransform(svg.node()).k, 0.8);
+  const t = d3.zoomIdentity.translate(w / 2 - k * (d.y + BOX_W / 2), h / 2 - k * d.x).scale(k);
+  svg.transition().duration(350).call(zoom.transform, t);
+}
+
+/* ---------- Site versions (national, TAS, NT) ---------- */
+let sourceData = null, view = 'all', loadNote = '';
+const VIEW_NAMES = { all:'All', national:'National' };
+
+function copyTree(n, extra) { return { ...n, ...extra, children: (n.children || []).map(c => copyTree(c, extra)) }; }
+function filterTree(n, v, isRoot) {
+  const t = terrOf(n);
+  if (v === 'national') {
+    if (t.length && !isRoot) return null;
+    return { ...n, children: (n.children || []).map(c => filterTree(c, v)).filter(Boolean) };
+  }
+  if (t.includes(v)) return copyTree(n, { context: false });
+  const kids = (n.children || []).map(c => filterTree(c, v)).filter(Boolean);
+  if (kids.length || isRoot) return { ...n, context: true, children: kids };
+  return null;
+}
+function countNodes(n) { return 1 + (n.children || []).reduce((a, c) => a + countNodes(c), 0); }
+function territories(n, set = new Set()) { terrOf(n).forEach(t => set.add(t)); (n.children || []).forEach(c => territories(c, set)); return set; }
+
+function setData(tree) {
+  sourceData = tree;
+  const terrs = [...territories(tree)].sort();
+  if (view !== 'all' && view !== 'national' && !terrs.includes(view)) view = 'all';
+  const box = document.getElementById('versions'); box.innerHTML = '';
+  if (terrs.length) {
+    const lab = document.createElement('label'); lab.textContent = 'Site version'; box.appendChild(lab);
+    ['all', 'national', ...terrs].forEach(v => {
+      const b = document.createElement('button');
+      b.textContent = VIEW_NAMES[v] || v; b.dataset.view = v;
+      b.onclick = () => { view = v; applyView(); };
+      box.appendChild(b);
+    });
+  }
+  applyView();
+}
+
+function applyView() {
+  document.querySelectorAll('#versions button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  const data = view === 'all' ? sourceData : filterTree(sourceData, view, true);
+  load(data);
+  const statsEl = document.getElementById('stats');
+  if (view === 'all') {
+    const tagged = all.filter(d => d.depth > 0 && terrOf(d.data).length).length;
+    const inSm = all.filter(d => d.data.inSitemap).length, notIA = all.filter(d => d.data.inSitemap && !d.data.inIA).length;
+    statsEl.textContent = `${inSm.toLocaleString()} pages in sitemap · ${notIA} not in IA sheet` + (tagged ? ` · ${tagged} territory pages` : '');
+  } else if (view === 'national') {
+    statsEl.textContent = `National site: ${(all.length - 1).toLocaleString()} pages`;
+  } else {
+    const own = all.filter(d => terrOf(d.data).includes(view) || (d.depth > 0 && !d.data.context)).length;
+    statsEl.textContent = `${view} site: ${own} pages · faded boxes are national pages shown for context`;
+    setDepth(99, true);
+  }
+  if (loadNote) statsEl.textContent += ' · ' + loadNote;
+  renderLegend(d3.max(all, d => d.depth));
+}
+
+/* ---------- Colour modes ---------- */
+let colourMode = 'age';
+const AGE_BINS = [
+  { max: 31,       label: 'Under 1 month', fill: '#fff4e6', stroke: '#efc48f', text: '#4a2a00' },
+  { max: 92,       label: '1–3 months',    fill: '#ffe0b8', stroke: '#e9b170', text: '#4a2a00' },
+  { max: 183,      label: '3–6 months',    fill: '#fdc283', stroke: '#e09a4b', text: '#3d2200' },
+  { max: 365,      label: '6–12 months',   fill: '#f79b4d', stroke: '#d0772c', text: '#2e1900' },
+  { max: 730,      label: '1–2 years',     fill: '#dc6424', stroke: '#b24e18', text: '#ffffff' },
+  { max: Infinity, label: 'Over 2 years',  fill: '#a83a0c', stroke: '#7d2a07', text: '#ffffff' }
+];
+const NO_DATE = { label: 'Not in sitemap / no date', fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' };
+const IA_STYLES = {
+  yes:    { label: 'In IA sheet',        fill: '#e3f4e1', stroke: '#8cc489', text: '#18381a' },
+  no:     { label: 'Not in IA sheet',    fill: '#fde4e1', stroke: '#e07a70', text: '#4d1a14' },
+  folder: { label: 'Folder only (not in sitemap)', fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' }
+};
+const TODAY = new Date();
+function ageDays(n) { if (!n.lastmod) return null; const t = new Date(n.lastmod); return isNaN(t) ? null : Math.max(0, Math.floor((TODAY - t) / 86400000)); }
+function ageBin(n) { const a = ageDays(n); return a == null ? NO_DATE : AGE_BINS.find(b => a <= b.max); }
+function nodeStyle(d) {
+  if (colourMode === 'age') return ageBin(d.data);
+  if (colourMode === 'ia') return !d.data.inSitemap ? IA_STYLES.folder : d.data.inIA ? IA_STYLES.yes : IA_STYLES.no;
+  return lv(d.depth);
+}
+function fmtDate(v) { const t = new Date(v); return isNaN(t) ? '' : t.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); }
+function fmtAge(days) {
+  if (days == null) return '';
+  if (days < 1) return 'today';
+  if (days < 60) return days + ' days ago';
+  if (days < 730) return Math.round(days / 30.4) + ' months ago';
+  return (days / 365).toFixed(1) + ' years ago';
+}
+document.querySelectorAll('#colourBy button').forEach(b => b.onclick = () => {
+  colourMode = b.dataset.mode;
+  document.querySelectorAll('#colourBy button').forEach(x => x.classList.toggle('active', x === b));
+  update(root); renderLegend(d3.max(all, d => d.depth));
+});
+document.querySelector('#colourBy button[data-mode="age"]').classList.add('active');
+
+/* ---------- Build the tree from sitemap URLs ---------- */
+function normUrl(u) {
+  try { const x = new URL(u, 'https://www.cancer.org.au'); return (x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/+$/, '')).toLowerCase(); }
+  catch (e) { return String(u).toLowerCase(); }
+}
+function slugLabel(seg) {
+  const t = decodeURIComponent(seg).replace(/\.(html?|aspx?|php)$/i, '').replace(/[-_]+/g, ' ').trim();
+  return t.length <= 3 ? t.toUpperCase() : t.charAt(0).toUpperCase() + t.slice(1);
+}
+function urlTerritories(path) {
+  const segs = path.toLowerCase().split('/').filter(Boolean), out = new Set();
+  segs.forEach(s => { if (s === 'tas' || /-tas$/.test(s)) out.add('TAS'); if (s === 'nt' || /-nt$/.test(s)) out.add('NT'); });
+  return [...out];
+}
+function buildFromSitemap(pages, ia) {
+  const first = pages[0] ? new URL(pages[0].url) : new URL('https://www.cancer.org.au/');
+  const origin = first.origin;
+  const root = { name: 'Homepage', url: origin + '/', raw: '/', children: [], inSitemap: false };
+  const byPath = new Map([['', root]]);
+  pages.forEach(p => {
+    let u; try { u = new URL(p.url); } catch (e) { return; }
+    const segs = u.pathname.split('/').filter(Boolean);
+    let node = root, path = '';
+    segs.forEach(seg => {
+      path += '/' + seg;
+      let n = byPath.get(path.toLowerCase());
+      if (!n) { n = { name: slugLabel(seg), url: origin + path, raw: path, children: [], inSitemap: false }; byPath.set(path.toLowerCase(), n); node.children.push(n); }
+      node = n;
+    });
+    node.inSitemap = true; node.lastmod = p.lastmod || null; node.url = p.url;
+  });
+  const walk = n => {
+    const m = ia.get(normUrl(n.url));
+    n.inIA = !!m;
+    if (m) { if (m.title) n.name = m.title; if (m.tags) n.tags = m.tags; }
+    if (!n.tags) { const t = urlTerritories(n.raw || ''); if (t.length) n.tags = [t.join('/')]; }
+    n.children.sort((a, b) => a.name.localeCompare(b.name));
+    n.children.forEach(walk);
+  };
+  walk(root);
+  return root;
+}
+
+/* ---------- Detail panel ---------- */
+function select(d) {
+  selected = d;
+  gNodes.selectAll('g.node').classed('selected', n => n === selected);
+  document.getElementById('pTitle').textContent = d.data.name;
+  document.getElementById('pCrumb').textContent = d.ancestors().reverse().map(a => a.data.name).join('  ›  ');
+  const info = document.getElementById('pInfo'); info.innerHTML = '';
+  const add = (k, v) => {
+    const dt = document.createElement('dt'); dt.textContent = k;
+    const dd = document.createElement('dd');
+    if (v instanceof Node) dd.appendChild(v); else dd.textContent = v;
+    info.append(dt, dd);
+  };
+  add('Level', d.depth === 0 ? 'Top' : String(d.depth));
+  if (d.data.inSitemap) add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'No date in sitemap');
+  else add('In sitemap', 'No. This is a folder in the URL, not a page in the sitemap');
+  if (d.data.inSitemap) add('In IA sheet', d.data.inIA ? 'Yes' : 'No');
+  if (badgeText(d.data)) add('Site version', badgeText(d.data).replace('/', ' and '));
+  if (d.data.notes) add('Note in sheet', d.data.notes.join('; '));
+  if (d.data.context) add('Shown because', 'National page above a ' + view + ' page');
+  add('Direct child pages', String(d.kids ? d.kids.length : 0));
+  add('All pages below', String(d.value - 1));
+  if (d.data.url) {
+    const a = document.createElement('a');
+    a.href = /^\//.test(d.data.url) ? d.data.url : d.data.url;
+    a.textContent = d.data.url; a.target = '_blank'; a.rel = 'noopener';
+    add('Link', a);
+  }
+  document.getElementById('pExpand').style.display = d.kids ? '' : 'none';
+  document.getElementById('pCollapse').style.display = d.kids ? '' : 'none';
+  document.getElementById('panel').style.display = 'block';
+}
+function hidePanel() { document.getElementById('panel').style.display = 'none'; }
+document.getElementById('panelClose').onclick = () => { selected = null; hidePanel(); update(root); };
+document.getElementById('pExpand').onclick = () => {
+  if (!selected) return;
+  selected.descendants().forEach(n => { n.children = n.kids; });
+  // descendants() only walks open branches, so walk the full list too
+  all.forEach(n => { if (n.kids && n.ancestors().includes(selected)) n.children = n.kids; });
+  update(selected);
+};
+document.getElementById('pCollapse').onclick = () => {
+  if (!selected) return;
+  all.forEach(n => { if (n.kids && n !== selected && n.ancestors().includes(selected)) n.children = null; });
+  selected.children = null;
+  update(selected);
+};
+
+/* ---------- Search ---------- */
+let qTimer = null;
+const qEl = document.getElementById('q'), qCount = document.getElementById('qcount');
+qEl.addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(runSearch, 200); });
+qEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && matches.length) { matchIdx = (matchIdx + 1) % matches.length; showMatch(); }
+});
+function runSearch() {
+  const q = qEl.value.trim().toLowerCase();
+  all.forEach(d => { d.match = false; });
+  matches = [];
+  if (q.length < 2) { qCount.textContent = ''; update(root); return; }
+  all.forEach(d => { if (d.depth > 0 && (d.data.name + ' ' + (d.data.raw || '') + ' ' + (d.data.tags || []).join(' ')).toLowerCase().includes(q)) { d.match = true; matches.push(d); } });
+  all.forEach(d => { if (d.kids) d.children = d.depth < 1 ? d.kids : null; });
+  matches.forEach(m => { let p = m.parent; while (p) { p.children = p.kids; p = p.parent; } });
+  update(root);
+  matchIdx = 0;
+  if (matches.length) showMatch(); else qCount.textContent = 'No matches';
+}
+function showMatch() {
+  qCount.textContent = `${matchIdx + 1} of ${matches.length}`;
+  const d = matches[matchIdx];
+  select(d); centreOn(d);
+}
+
+/* ---------- Controls ---------- */
+document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => setDepth(+b.dataset.depth, true));
+document.getElementById('fit').onclick = fit;
+document.getElementById('sampleBtn').onclick = () => { loadNote = 'sample data'; setData(buildTree(sampleRows())); };
+
+function rowsFromWorkbook(wb) {
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  return XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', blankrows: false });
+}
+function loadFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+      const tree = buildTree(rowsFromWorkbook(wb));
+      if (!tree.children || !tree.children.length) throw new Error('empty');
+      loadNote = 'from ' + file.name; setData(tree);
+    } catch (err) {
+      showModalMessage('That file could not be read as a page list. Check that column A holds level 1, column B level 2, and so on.');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+document.getElementById('file').addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]); e.target.value = ''; });
+
+const main = document.getElementById('main'), drop = document.getElementById('drop');
+['dragenter', 'dragover'].forEach(t => main.addEventListener(t, e => { e.preventDefault(); drop.style.display = 'flex'; }));
+['dragleave', 'drop'].forEach(t => main.addEventListener(t, e => { e.preventDefault(); drop.style.display = 'none'; }));
+main.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+
+const modal = document.getElementById('modal'), msg = document.getElementById('msg');
+function showModalMessage(text) { modal.style.display = 'flex'; msg.textContent = text; }
+document.getElementById('pasteBtn').onclick = () => { msg.textContent = ''; modal.style.display = 'flex'; document.getElementById('pasteArea').focus(); };
+document.getElementById('pasteCancel').onclick = () => { modal.style.display = 'none'; };
+document.getElementById('pasteGo').onclick = () => {
+  const text = document.getElementById('pasteArea').value;
+  if (!text.trim()) { msg.textContent = 'Paste some rows first.'; return; }
+  let rows;
+  if (text.includes('\t')) rows = text.replace(/\r/g, '').split('\n').map(l => l.split('\t'));
+  else rows = rowsFromWorkbook(XLSX.read(text, { type: 'string' }));
+  const tree = buildTree(rows);
+  if (!tree.children || !tree.children.length) { msg.textContent = 'No pages found. Check the columns.'; return; }
+  modal.style.display = 'none';
+  loadNote = 'pasted data'; setData(tree);
+};
+
+window.addEventListener('resize', () => { if (root) fit(); });
+
+const statsEl = document.getElementById('stats');
+async function loadFromSheet() {
+  statsEl.textContent = 'Loading sitemap…';
+  try {
+    const sm = await (await fetch(SITEMAP_JSON + '?t=' + Date.now(), { cache: 'no-store' })).json();
+    const ia = new Map();
+    if (SHEET_CSV_URL) {
+      try {
+        const text = await (await fetch(SHEET_CSV_URL + '&t=' + Date.now(), { cache: 'no-store' })).text();
+        const iaTree = buildTree(rowsFromWorkbook(XLSX.read(text, { type: 'string' })));
+        const walk = n => { if (n.url) ia.set(normUrl(n.url), { title: n.name, tags: n.tags }); (n.children || []).forEach(walk); };
+        walk(iaTree);
+      } catch (e) { console.warn('IA sheet not loaded', e); }
+    }
+    loadNote = `sitemap checked ${fmtDate(sm.fetched)}` + (ia.size ? '' : ' · IA sheet not loaded');
+    setData(buildFromSitemap(sm.pages, ia));
+  } catch (err) {
+    statsEl.textContent = 'Could not load the sitemap data (' + err.message + ').';
+  }
+}
+document.getElementById('refreshBtn').onclick = loadFromSheet;
+// Re-measure titles once the web font has loaded, so wrapping matches what is drawn
+if (document.fonts) document.fonts.ready.then(() => { if (root) { all.forEach(measureNode); update(root); } });
+loadFromSheet();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+name: Update sitemap data
+
+on:
+  schedule:
+    - cron: "0 19 * * *"   # every day at about 6am Sydney time (summer) / 5am (winter)
+  workflow_dispatch:        # adds a "Run workflow" button in the Actions tab
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/update-sitemap.yml"
+      - "scripts/fetch_sitemap.py"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download sitemap
+        run: python3 scripts/fetch_sitemap.py
+      - name: Save changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sitemap.json
+          if git diff --staged --quiet; then
+            echo "No changes to the sitemap"
+          else
+            git commit -m "Update sitemap data"
+            git push
+          fi
