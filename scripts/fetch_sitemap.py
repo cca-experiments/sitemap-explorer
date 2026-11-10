@@ -5,6 +5,7 @@ Handles a plain sitemap or a sitemap index (a sitemap that lists other sitemaps)
 """
 import datetime
 import json
+import os
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -58,6 +59,7 @@ def main():
         "count": len(pages),
         "pages": [{"url": u, "lastmod": pages[u]} for u in sorted(pages)],
     }
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("{\n")
         f.write(f'"source": {json.dumps(data["source"])},\n"fetched": {json.dumps(data["fetched"])},\n"count": {data["count"]},\n"pages": [\n')
