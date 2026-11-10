@@ -399,7 +399,8 @@ function buildTree(rows) {
 /* ---------- Rendering ---------- */
 const svg = d3.select('#svg'), layer = d3.select('#zoomLayer');
 const gLinks = d3.select('#links'), gNodes = d3.select('#nodes');
-const zoom = d3.zoom().scaleExtent([0.05, 2.5]).on('zoom', e => layer.attr('transform', e.transform));
+let userMoved = false;
+const zoom = d3.zoom().scaleExtent([0.05, 2.5]).on('zoom', e => { layer.attr('transform', e.transform); if (e.sourceEvent) userMoved = true; });
 svg.call(zoom).on('dblclick.zoom', null);
 const layout = d3.tree().nodeSize([1, COL_W]).separation((a, b) => (a.h + b.h) / 2 + (a.parent === b.parent ? 7 : 16));
 
@@ -831,7 +832,11 @@ document.getElementById('pasteGo').onclick = () => {
   loadNote = 'pasted data'; setData(tree);
 };
 
-window.addEventListener('resize', () => { if (root) fit(); });
+// Keep the opening view fitted while the page settles (fonts loading, header wrapping, window resizing),
+// until the person drags or zooms the tree themselves.
+const refitView = () => { if (!root || userMoved) return; (view === 'all' || view === 'national') ? fitLeft() : fit(); };
+if (window.ResizeObserver) new ResizeObserver(refitView).observe(document.getElementById('main'));
+else window.addEventListener('resize', refitView);
 
 const statsEl = document.getElementById('stats');
 async function loadFromSheet() {
@@ -855,7 +860,7 @@ async function loadFromSheet() {
 }
 document.getElementById('refreshBtn').onclick = loadFromSheet;
 // Re-measure titles once the web font has loaded, so wrapping matches what is drawn
-if (document.fonts) document.fonts.ready.then(() => { if (root) { all.forEach(measureNode); update(root); if (view === 'all' || view === 'national') fitLeft(); } });
+if (document.fonts) document.fonts.ready.then(() => { if (root) { all.forEach(measureNode); update(root); refitView(); } });
 loadFromSheet();
 </script>
 </body>
