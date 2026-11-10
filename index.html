@@ -530,8 +530,9 @@ function fitLeft() {
   const nodes = root.descendants();
   const x0 = d3.min(nodes, d => d.x - d.h / 2) - 10, x1 = d3.max(nodes, d => d.x + d.h / 2) + 10;
   const [w, h] = viewSize();
-  const k = Math.max(0.3, Math.min(1, (h - 120) / (x1 - x0)));
-  const t = d3.zoomIdentity.translate(40 - k * root.y, h / 2 - k * (x0 + x1) / 2 + 20).scale(k);
+  const top = 75, bottom = 55;   // space for the note at the top and the legend at the bottom
+  const k = Math.max(0.3, Math.min(1, (h - top - bottom) / (x1 - x0)));
+  const t = d3.zoomIdentity.translate(40 - k * root.y, top + (h - top - bottom) / 2 - k * (x0 + x1) / 2).scale(k);
   svg.transition().duration(300).call(zoom.transform, t);
 }
 
