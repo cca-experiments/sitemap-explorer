@@ -1,4 +1,4 @@
-# Sitemap explorer
+# Sitemap Explorer
 
 An interactive tree of every page in the cancer.org.au XML sitemap, coloured by when each page was last updated.
 
