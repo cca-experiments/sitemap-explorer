@@ -487,11 +487,15 @@ function keepCentreInPlace(change) {
     const dx = t0.applyX(d.y + BOX_W / 2) - w / 2, dy = t0.applyY(d.x) - h / 2, dist = dx * dx + dy * dy;
     if (dist < best) { best = dist; anchor = d; }
   });
-  const key = anchor && nodeKey(anchor), sx = anchor && t0.applyX(anchor.y), sy = anchor && t0.applyY(anchor.x);
+  if (!anchor) { change(); return; }
+  // Remember the anchor and its parents, so a parent can stand in if the anchor gets closed
+  const chain = anchor.ancestors().map(d => ({ key: nodeKey(d), sx: t0.applyX(d.y), sy: t0.applyY(d.x) }));
   change();
-  const now = key && root.descendants().find(d => nodeKey(d) === key);
-  if (!now) return;
-  svg.call(zoom.transform, d3.zoomIdentity.translate(sx - t0.k * now.y, sy - t0.k * now.x).scale(t0.k));
+  const shown = new Map(root.descendants().map(d => [nodeKey(d), d]));
+  const hit = chain.find(c => shown.has(c.key));
+  if (!hit) return;
+  const now = shown.get(hit.key);
+  svg.call(zoom.transform, d3.zoomIdentity.translate(hit.sx - t0.k * now.y, hit.sy - t0.k * now.x).scale(t0.k));
 }
 function toggle(d) { if (!d.kids) return; keepInPlace(d, () => { d.children = d.children ? null : d.kids; update(d); }); }
 
