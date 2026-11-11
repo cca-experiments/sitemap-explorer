@@ -86,7 +86,7 @@
   <div class="group" id="colourBy">
     <label>Colour by</label>
     <button data-mode="age">Last updated</button>
-    <button data-mode="ia">In IA sheet</button>
+    <button data-mode="check">Page check</button>
     <button data-mode="level">Level</button>
   </div>
   <div class="group">
@@ -125,12 +125,13 @@
 
 <script>
 /* ===== SETTINGS =====
-   SITEMAP_JSON: the sitemap snapshot, refreshed daily by the GitHub Action in this repo.
-   SHEET_CSV_URL: the IA Google Sheet ("Publish to web" CSV link). Used for page titles,
-   TAS/NT tags and the "In IA sheet" comparison. Leave empty to skip. */
+   All data comes from the XML sitemaps and the live pages, refreshed by the GitHub Action in this repo.
+   SITEMAP_JSON: the cancer.org.au sitemap (daily).
+   CONNECT_JSON: Cancer Connect pages linked from cancer.org.au (daily).
+   TITLES_JSON: live page titles (new and changed pages daily, every page monthly). */
 const SITEMAP_JSON = 'data/sitemap.json';
-const CONNECT_JSON = 'data/connect.json';   // Cancer Connect pages linked from cancer.org.au
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMJtMUMnxWwtMgzKg1oVP4faKt0VIIT8aLSkfLFbudAPy5rej7ixpgEcevEcZqEsTTu_KuYVjZPaHL/pub?gid=630510010&single=true&output=csv';
+const CONNECT_JSON = 'data/connect.json';
+const TITLES_JSON = 'data/titles.json';
 /* ==================== */
 
 const COLS = 10, BOX_W = 220, BOX_H = 26, COL_W = 272, LINE_H = 15, PAD_Y = 6, MAX_LINES = 3;
@@ -426,7 +427,7 @@ function load(data) {
 function renderLegend(maxDepth) {
   const el = document.getElementById('legend'); el.innerHTML = '';
   if (colourMode !== 'level') {
-    const items = colourMode === 'age' ? [...AGE_BINS, NO_DATE] : [IA_STYLES.yes, IA_STYLES.no, IA_STYLES.external, IA_STYLES.folder];
+    const items = colourMode === 'age' ? [...AGE_BINS, NO_DATE] : Object.values(CHECK_STYLES);
     items.forEach(it => {
       const n = all.filter(d => nodeStyle(d) === it).length;
       const s = document.createElement('span'); const sw = document.createElement('b'); sw.className = 'sw';
@@ -590,9 +591,9 @@ function applyView() {
   const statsEl = document.getElementById('stats');
   if (view === 'all') {
     const tagged = all.filter(d => d.depth > 0 && terrOf(d.data).length).length;
-    const inSm = all.filter(d => d.data.inSitemap).length, notIA = all.filter(d => d.data.inSitemap && !d.data.inIA).length;
+    const inSm = all.filter(d => d.data.inSitemap).length, probs = all.filter(d => d.data.check && d.data.check.problem).length;
     const ext = all.filter(d => d.data.external && d.data.lastmod).length;
-    statsEl.textContent = `${inSm.toLocaleString()} pages in sitemap · ${notIA} not in IA sheet` + (ext ? ` · ${ext} Cancer Connect pages linked` : '') + (tagged ? ` · ${tagged} territory pages` : '');
+    statsEl.textContent = `${inSm.toLocaleString()} pages in sitemap` + (probs ? ` · ${probs} with a page check problem` : '') + (ext ? ` · ${ext} Cancer Connect pages linked` : '') + (tagged ? ` · ${tagged} territory pages` : '');
   } else if (view === 'national') {
     statsEl.textContent = `National site: ${(all.length - 1).toLocaleString()} pages`;
   } else {
@@ -616,11 +617,12 @@ const AGE_BINS = [
   { max: Infinity, label: 'Over 2 years',  fill: '#94350b', stroke: '#6c2507', text: '#ffffff' }
 ];
 const NO_DATE = { label: 'Not in sitemap / no date', fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' };
-const IA_STYLES = {
-  yes:    { label: 'In IA sheet',        fill: '#e3f4e1', stroke: '#8cc489', text: '#18381a' },
-  no:     { label: 'Not in IA sheet',    fill: '#fde4e1', stroke: '#e07a70', text: '#4d1a14' },
-  external: { label: 'Cancer Connect page', fill: '#efe9fb', stroke: '#a58fd6', text: '#2c1a52' },
-  folder: { label: 'Folder only (not in sitemap)', fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' }
+const CHECK_STYLES = {
+  ok:       { label: 'Page loads',          fill: '#e3f4e1', stroke: '#8cc489', text: '#18381a' },
+  redirect: { label: 'Redirects elsewhere', fill: '#fff1c2', stroke: '#d9b22a', text: '#3d3200' },
+  error:    { label: 'Error or not found',  fill: '#fde4e1', stroke: '#e07a70', text: '#4d1a14' },
+  unchecked:{ label: 'Not checked yet',     fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' },
+  folder:   { label: 'Folder only (not a page)', fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' }
 };
 const TODAY = new Date();
 function ageDays(n) { if (!n.lastmod) return null; const t = new Date(n.lastmod); return isNaN(t) ? null : Math.max(0, Math.floor((TODAY - t) / 86400000)); }
@@ -628,7 +630,13 @@ function ageBin(n) { const a = ageDays(n); return a == null ? NO_DATE : AGE_BINS
 function nodeStyle(d) {
   if (d.data.group) return GROUP_STYLE;
   if (colourMode === 'age') return ageBin(d.data);
-  if (colourMode === 'ia') return d.data.external ? IA_STYLES.external : !d.data.inSitemap ? IA_STYLES.folder : d.data.inIA ? IA_STYLES.yes : IA_STYLES.no;
+  if (colourMode === 'check') {
+    const c = d.data.check, isPage = d.data.inSitemap || (d.data.external && d.data.lastmod);
+    if (!isPage) return CHECK_STYLES.folder;
+    if (!c) return CHECK_STYLES.unchecked;
+    if (c.problem === 'Redirects') return CHECK_STYLES.redirect;
+    return c.problem ? CHECK_STYLES.error : CHECK_STYLES.ok;
+  }
   return lv(levelOf(d));
 }
 function fmtDate(v) { const t = new Date(v); return isNaN(t) ? '' : t.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); }
@@ -655,12 +663,18 @@ function slugLabel(seg) {
   const t = decodeURIComponent(seg).replace(/\.(html?|aspx?|php)$/i, '').replace(/[-_]+/g, ' ').trim();
   return t.length <= 3 ? t.toUpperCase() : t.charAt(0).toUpperCase() + t.slice(1);
 }
+function titleTerritories(title) {
+  const t = String(title || ''), out = [];
+  if (/\(TAS\)|\{TAS\}|\bTasmania\b/i.test(t)) out.push('TAS');
+  if (/\(NT\)|\{NT\}|\bNorthern Territory\b/i.test(t)) out.push('NT');
+  return out;
+}
 function urlTerritories(path) {
   const segs = path.toLowerCase().split('/').filter(Boolean), out = new Set();
   segs.forEach(s => { if (s === 'tas' || /-tas$/.test(s)) out.add('TAS'); if (s === 'nt' || /-nt$/.test(s)) out.add('NT'); });
   return [...out];
 }
-function buildFromSitemap(pages, ia, connect) {
+function buildFromSitemap(pages, titles, connect) {
   const first = pages[0] ? new URL(pages[0].url) : new URL('https://www.cancer.org.au/');
   const origin = first.origin;
   const root = { name: 'Homepage', url: origin + '/', raw: '/', children: [], inSitemap: false };
@@ -700,11 +714,12 @@ function buildFromSitemap(pages, ia, connect) {
     source.children.push(top);
   });
   const walk = n => {
-    if (n.external) { n.children.sort((a, b) => a.name.localeCompare(b.name)); n.children.forEach(walk); return; }
-    const m = ia.get(normUrl(n.url));
-    n.inIA = !!m;
-    if (m) { if (m.title) n.name = m.title; if (m.tags) n.tags = m.tags; }
-    if (!n.tags) { const t = urlTerritories(n.raw || ''); if (t.length) n.tags = [t.join('/')]; }
+    const t = titles[n.url];
+    if (t) { n.check = t; if (t.title) n.name = t.title; }
+    if (!n.external) {
+      const terr = [...new Set([...urlTerritories(n.raw || ''), ...titleTerritories(n.name)])];
+      if (terr.length) n.tags = [terr.join('/')];
+    }
     n.children.sort((a, b) => a.name.localeCompare(b.name));
     n.children.forEach(walk);
   };
@@ -777,7 +792,11 @@ function select(d) {
     add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'Not in the Cancer Connect sitemap');
   } else if (d.data.inSitemap) add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'No date in sitemap');
   else if (!d.data.group) add('In sitemap', 'No. This is a folder in the URL, not a page in the sitemap');
-  if (d.data.inSitemap && !d.data.external) add('In IA sheet', d.data.inIA ? 'Yes' : 'No');
+  if (d.data.check) {
+    const c = d.data.check;
+    add('Page check', c.problem ? (c.problem === 'Redirects' ? 'Redirects to ' + (c.redirects_to || 'another page') : c.problem) : `Loads (checked ${fmtDate(c.checked)})`);
+    if (c.tab_title && c.tab_title !== d.data.name) add('Browser tab title', c.tab_title);
+  } else if (d.data.inSitemap) add('Page check', 'Not checked yet');
   if (badgeText(d.data)) add('Site version', badgeText(d.data).replace('/', ' and '));
   if (d.data.notes) add('Note in sheet', d.data.notes.join('; '));
   if (d.data.context) add('Shown because', 'National page above a ' + view + ' page');
@@ -893,17 +912,10 @@ async function loadFromSheet() {
     const sm = await (await fetch(SITEMAP_JSON + '?t=' + Date.now(), { cache: 'no-store' })).json();
     let connect = null;
     try { const r = await fetch(CONNECT_JSON + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) connect = await r.json(); } catch (e) { /* Connect data is optional */ }
-    const ia = new Map();
-    if (SHEET_CSV_URL) {
-      try {
-        const text = await (await fetch(SHEET_CSV_URL + '&t=' + Date.now(), { cache: 'no-store' })).text();
-        const iaTree = buildTree(rowsFromWorkbook(XLSX.read(text, { type: 'string' })));
-        const walk = n => { if (n.url) ia.set(normUrl(n.url), { title: n.name, tags: n.tags }); (n.children || []).forEach(walk); };
-        walk(iaTree);
-      } catch (e) { console.warn('IA sheet not loaded', e); }
-    }
-    loadNote = `sitemap checked ${fmtDate(sm.fetched)}` + (ia.size ? '' : ' · IA sheet not loaded');
-    setData(buildFromSitemap(sm.pages, ia, connect));
+    let titles = {};
+    try { const r = await fetch(TITLES_JSON + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) titles = (await r.json()).pages || {}; } catch (e) { /* titles are optional */ }
+    loadNote = `sitemap checked ${fmtDate(sm.fetched)}` + (Object.keys(titles).length ? '' : ' · page titles not read yet');
+    setData(buildFromSitemap(sm.pages, titles, connect));
   } catch (err) {
     statsEl.textContent = 'Could not load the sitemap data (' + err.message + ').';
   }

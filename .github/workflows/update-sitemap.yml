@@ -4,12 +4,18 @@ on:
   schedule:
     - cron: "0 19 * * *"   # every day at about 6am Sydney time (summer) / 5am (winter)
   workflow_dispatch:        # adds a "Run workflow" button in the Actions tab
+    inputs:
+      full_title_check:
+        description: "Re-read every page title (takes about 30 minutes)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
       - ".github/workflows/update-sitemap.yml"
       - "scripts/fetch_sitemap.py"
       - "scripts/fetch_connect.py"
+      - "scripts/fetch_titles.py"
 
 permissions:
   contents: write
@@ -17,6 +23,7 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v5
       - name: Download sitemap
@@ -24,6 +31,11 @@ jobs:
       - name: Find Cancer Connect pages linked from cancer.org.au
         run: python3 scripts/fetch_connect.py
         continue-on-error: true   # if Connect can't be reached, still save the cancer.org.au sitemap
+      - name: Read page titles (new and changed pages daily, every page on the 1st of the month)
+        run: python3 scripts/fetch_titles.py
+        continue-on-error: true
+        env:
+          FULL_TITLE_CHECK: ${{ inputs.full_title_check && '1' || '0' }}
       - name: Save changes
         run: |
           git config user.name "github-actions[bot]"
@@ -33,5 +45,6 @@ jobs:
             echo "No changes to the sitemap"
           else
             git commit -m "Update sitemap data"
+            git pull --rebase origin main
             git push
           fi
