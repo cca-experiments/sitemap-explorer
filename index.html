@@ -89,7 +89,7 @@
       <button data-depth="3">3</button>
       <button data-depth="99">All</button>
     </div>
-    <div class="group"><button id="fit">Fit to screen</button></div>
+    <div class="group"><button id="recentre" title="Bring the tree back into view without changing the zoom">Re-centre</button><button id="fit" title="Zoom so everything that is open fits on screen">Fit to screen</button></div>
     <span class="divider"></span>
     <div class="group" id="colourBy">
       <label>Colour by</label>
@@ -97,7 +97,7 @@
       <button data-mode="check">Page check</button>
       <button data-mode="level">Level</button>
     </div>
-    <div class="spacer"></div>
+    <span class="divider"></span>
     <div class="group">
       <label class="filebtn primary" for="file" style="display:none">Load spreadsheet</label>
       <input id="file" type="file" accept=".xlsx,.xls,.csv,.tsv,.txt">
@@ -925,6 +925,18 @@ function showMatch() {
 function setLevelActive(n) { document.querySelectorAll('#levels button').forEach(b => b.classList.toggle('active', n != null && b.dataset.depth === String(n))); }
 document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => { keepCentreInPlace(() => setDepth(+b.dataset.depth + 1, false)); setLevelActive(b.dataset.depth); });
 document.getElementById('fit').onclick = fit;
+// Re-centre: keep the zoom, put the Homepage back on the left and centre the open tree vertically
+// (or centre on the Homepage if the open tree is taller than the screen)
+function recentre() {
+  const k = d3.zoomTransform(svg.node()).k;
+  const nodes = root.descendants();
+  const x0 = d3.min(nodes, d => d.x - d.h / 2), x1 = d3.max(nodes, d => d.x + d.h / 2);
+  const [w, h] = viewSize();
+  const top = 50, bottom = 60, avail = h - top - bottom;
+  const midX = (x1 - x0) * k <= avail ? (x0 + x1) / 2 : root.x;
+  svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity.translate(40 - k * root.y, top + avail / 2 - k * midX).scale(k));
+}
+document.getElementById('recentre').onclick = recentre;
 document.getElementById('sampleBtn').onclick = () => { loadNote = 'sample data'; setData(buildTree(sampleRows())); };
 
 function rowsFromWorkbook(wb) {
