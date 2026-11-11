@@ -477,6 +477,22 @@ function keepInPlace(d, change) {
   const dur = root.descendants().length > 700 ? 0 : 250;
   if (dur) svg.transition().duration(dur).call(zoom.transform, t1); else svg.call(zoom.transform, t1);
 }
+// Keep whatever is in the middle of the screen in the same place while the tree changes.
+// Used by the site version and level buttons. The change may rebuild the tree, so pages are matched by key.
+function keepCentreInPlace(change) {
+  const t0 = d3.zoomTransform(svg.node());
+  const [w, h] = viewSize();
+  let anchor = null, best = Infinity;
+  if (root) root.descendants().forEach(d => {
+    const dx = t0.applyX(d.y + BOX_W / 2) - w / 2, dy = t0.applyY(d.x) - h / 2, dist = dx * dx + dy * dy;
+    if (dist < best) { best = dist; anchor = d; }
+  });
+  const key = anchor && nodeKey(anchor), sx = anchor && t0.applyX(anchor.y), sy = anchor && t0.applyY(anchor.x);
+  change();
+  const now = key && root.descendants().find(d => nodeKey(d) === key);
+  if (!now) return;
+  svg.call(zoom.transform, d3.zoomIdentity.translate(sx - t0.k * now.y, sy - t0.k * now.x).scale(t0.k));
+}
 function toggle(d) { if (!d.kids) return; keepInPlace(d, () => { d.children = d.children ? null : d.kids; update(d); }); }
 
 const trunc = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
@@ -599,7 +615,7 @@ function setData(tree) {
     ['all', 'national', ...terrs].forEach(v => {
       const b = document.createElement('button');
       b.textContent = VIEW_NAMES[v] || v; b.dataset.view = v;
-      b.onclick = () => { view = v; applyView(); };
+      b.onclick = () => { view = v; keepCentreInPlace(applyView); };
       box.appendChild(b);
     });
   }
@@ -878,7 +894,7 @@ function showMatch() {
 }
 
 /* ---------- Controls ---------- */
-document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => setDepth(+b.dataset.depth + 1, false));
+document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => keepCentreInPlace(() => setDepth(+b.dataset.depth + 1, false)));
 document.getElementById('fit').onclick = fit;
 document.getElementById('sampleBtn').onclick = () => { loadNote = 'sample data'; setData(buildTree(sampleRows())); };
 
