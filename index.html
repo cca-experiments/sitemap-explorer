@@ -13,7 +13,17 @@
   * { box-sizing:border-box; }
   html,body { margin:0; height:100%; font-family:Inter,system-ui,sans-serif; color:var(--ink); background:var(--bg); }
   body { display:flex; flex-direction:column; }
-  header { background:#fff; border-bottom:1px solid var(--line); padding:12px 16px; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; }
+  header { background:#fff; border-bottom:1px solid var(--line); padding:10px 16px; flex:none; }
+  header .row { display:flex; align-items:center; gap:8px 16px; min-height:32px; flex-wrap:nowrap; }
+  header .row + .row { margin-top:6px; }
+  header .row1 .stats { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  header .divider { width:1px; height:22px; background:var(--line); flex:none; }
+  header .group { flex-wrap:nowrap; }
+  @media (max-width: 900px) {
+    header .row, header .group { flex-wrap:wrap; }
+    header .row1 .stats { white-space:normal; }
+    header .divider { display:none; }
+  }
   h1 { font-size:17px; margin:0 8px 0 0; font-weight:600; }
   .stats { color:var(--muted); font-size:13px; }
   .group { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
@@ -67,34 +77,42 @@
 </head>
 <body>
 <header>
-  <h1>Sitemap Explorer</h1>
-  <span class="stats" id="stats"></span>
-  <div class="spacer"></div>
-  <div class="search">
-    <input id="q" type="search" placeholder="Search pages… (Enter for next)">
-    <span id="qcount"></span>
+  <div class="row row1">
+    <h1>Sitemap Explorer</h1>
+    <span class="stats" id="stats"></span>
   </div>
-  <div class="group" id="versions"></div>
-  <div class="group">
-    <label>Show levels</label>
-    <button data-depth="1">1</button>
-    <button data-depth="2">2</button>
-    <button data-depth="3">3</button>
-    <button data-depth="99">All</button>
-    <button id="fit">Fit to screen</button>
+  <div class="row row2">
+    <div class="group" id="levels">
+      <label>Show levels</label>
+      <button data-depth="1">1</button>
+      <button data-depth="2">2</button>
+      <button data-depth="3">3</button>
+      <button data-depth="99">All</button>
+    </div>
+    <div class="group"><button id="fit">Fit to screen</button></div>
+    <span class="divider"></span>
+    <div class="group" id="colourBy">
+      <label>Colour by</label>
+      <button data-mode="age">Last updated</button>
+      <button data-mode="check">Page check</button>
+      <button data-mode="level">Level</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="group">
+      <label class="filebtn primary" for="file" style="display:none">Load spreadsheet</label>
+      <input id="file" type="file" accept=".xlsx,.xls,.csv,.tsv,.txt">
+      <button id="pasteBtn" style="display:none">Paste</button>
+      <button id="refreshBtn">Reload</button>
+      <button id="sampleBtn" style="display:none">Sample</button>
+    </div>
   </div>
-  <div class="group" id="colourBy">
-    <label>Colour by</label>
-    <button data-mode="age">Last updated</button>
-    <button data-mode="check">Page check</button>
-    <button data-mode="level">Level</button>
-  </div>
-  <div class="group">
-    <label class="filebtn primary" for="file" style="display:none">Load spreadsheet</label>
-    <input id="file" type="file" accept=".xlsx,.xls,.csv,.tsv,.txt">
-    <button id="pasteBtn" style="display:none">Paste</button>
-    <button id="refreshBtn">Reload</button>
-    <button id="sampleBtn" style="display:none">Sample</button>
+  <div class="row row3">
+    <div class="search">
+      <input id="q" type="search" placeholder="Search pages… (Enter for next)">
+      <span id="qcount"></span>
+    </div>
+    <span class="divider"></span>
+    <div class="group" id="versions"></div>
   </div>
 </header>
 <main id="main">
@@ -497,7 +515,7 @@ function keepCentreInPlace(change) {
   const now = shown.get(hit.key);
   svg.call(zoom.transform, d3.zoomIdentity.translate(hit.sx - t0.k * now.y, hit.sy - t0.k * now.x).scale(t0.k));
 }
-function toggle(d) { if (!d.kids) return; keepInPlace(d, () => { d.children = d.children ? null : d.kids; update(d); }); }
+function toggle(d) { if (!d.kids) return; if (typeof setLevelActive === 'function') setLevelActive(null); keepInPlace(d, () => { d.children = d.children ? null : d.kids; update(d); }); }
 
 const trunc = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 const linkPath = (s, t) => {
@@ -633,6 +651,7 @@ function applyView() {
   const expanded = firstLoad ? null : new Set(all.filter(d => d.children).map(nodeKey));
   const isTerritory = view !== 'all' && view !== 'national';
   load(data, { expanded, keepView: !firstLoad, reveal: isTerritory ? (d => terrOf(d.data).includes(view)) : null });
+  if (firstLoad) setLevelActive(1); else if (isTerritory) setLevelActive(null);
   const statsEl = document.getElementById('stats');
   if (view === 'all') {
     const tagged = all.filter(d => d.depth > 0 && terrOf(d.data).length).length;
@@ -646,6 +665,7 @@ function applyView() {
     statsEl.textContent = `${view} site: ${own} pages · faded boxes are national pages shown for context`;
   }
   if (loadNote) statsEl.textContent += ' · ' + loadNote;
+  statsEl.title = statsEl.textContent;   // full text on hover if the line is cut short
   renderLegend(d3.max(all, d => d.depth));
 }
 
@@ -860,12 +880,14 @@ function hidePanel() { document.getElementById('panel').style.display = 'none'; 
 document.getElementById('panelClose').onclick = () => { selected = null; hidePanel(); update(root); };
 document.getElementById('pExpand').onclick = () => {
   if (!selected) return;
+  setLevelActive(null);
   selected.descendants().forEach(n => { n.children = n.kids; });
   // descendants() only walks open branches, so walk the full list too
   keepInPlace(selected, () => { all.forEach(n => { if (n.kids && n.ancestors().includes(selected)) n.children = n.kids; }); update(selected); });
 };
 document.getElementById('pCollapse').onclick = () => {
   if (!selected) return;
+  setLevelActive(null);
   keepInPlace(selected, () => {
     all.forEach(n => { if (n.kids && n !== selected && n.ancestors().includes(selected)) n.children = null; });
     selected.children = null;
@@ -885,6 +907,7 @@ function runSearch() {
   all.forEach(d => { d.match = false; });
   matches = [];
   if (q.length < 2) { qCount.textContent = ''; update(root); return; }
+  setLevelActive(null);
   all.forEach(d => { if (d.depth > 0 && (d.data.name + ' ' + (d.data.raw || '') + ' ' + (d.data.tags || []).join(' ')).toLowerCase().includes(q)) { d.match = true; matches.push(d); } });
   matches.forEach(m => { let p = m.parent; while (p) { p.children = p.kids; p = p.parent; } });
   update(root);
@@ -898,7 +921,9 @@ function showMatch() {
 }
 
 /* ---------- Controls ---------- */
-document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => keepCentreInPlace(() => setDepth(+b.dataset.depth + 1, false)));
+// "Show levels" buttons show which level is open; the selection clears once sections are opened or closed by hand
+function setLevelActive(n) { document.querySelectorAll('#levels button').forEach(b => b.classList.toggle('active', n != null && b.dataset.depth === String(n))); }
+document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => { keepCentreInPlace(() => setDepth(+b.dataset.depth + 1, false)); setLevelActive(b.dataset.depth); });
 document.getElementById('fit').onclick = fit;
 document.getElementById('sampleBtn').onclick = () => { loadNote = 'sample data'; setData(buildTree(sampleRows())); };
 
