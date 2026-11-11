@@ -19,6 +19,7 @@ from zoneinfo import ZoneInfo
 
 DELAY = 1.6
 OUT = "data/titles.json"
+VERSION = 2   # raise this to re-read every page after changing how titles are read
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; CCA-sitemap-explorer; +https://cca-experiments.github.io/sitemap-explorer/)"}
 SUFFIXES = [" | Cancer Council Australia", " | Cancer Council", " | Cancer Connect", " - Cancer Council Australia"]
 
@@ -29,13 +30,15 @@ class TitleParser(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.in_title = self.in_h1 = False
-        self.nav = 0
-        self.title, self.h1, self.done_h1 = "", "", False
+        self.nav = self.svg = 0
+        self.title, self.h1, self.done_h1, self.done_title = "", "", False, False
 
     def handle_starttag(self, tag, attrs):
         if tag == "nav":
             self.nav += 1
-        elif tag == "title":
+        elif tag == "svg":
+            self.svg += 1
+        elif tag == "title" and not self.done_title and not self.svg:
             self.in_title = True
         elif tag == "h1" and not self.done_h1 and not self.nav:
             self.in_h1 = True
@@ -43,8 +46,10 @@ class TitleParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "nav" and self.nav:
             self.nav -= 1
-        elif tag == "title":
-            self.in_title = False
+        elif tag == "svg" and self.svg:
+            self.svg -= 1
+        elif tag == "title" and self.in_title:
+            self.in_title, self.done_title = False, True
         elif tag == "h1" and self.in_h1:
             self.in_h1 = False
             self.done_h1 = bool(tidy(self.h1))
@@ -106,7 +111,7 @@ def main():
 
     sydney_today = datetime.datetime.now(ZoneInfo("Australia/Sydney")).date()
     full = os.environ.get("FULL_TITLE_CHECK") == "1" or sydney_today.day == 1
-    todo = [u for u in pages if full or u not in cache or cache[u].get("lastmod_seen") != pages[u]]
+    todo = [u for u in pages if full or u not in cache or cache[u].get("lastmod_seen") != pages[u] or cache[u].get("v") != VERSION]
     print(f"{'Full' if full else 'Daily'} title check: {len(todo)} of {len(pages)} pages")
 
     def save():
@@ -122,7 +127,7 @@ def main():
         old = cache.get(url, {})
         if "title" not in result and old.get("title"):
             result["title"] = old["title"]  # keep the last good title if the page could not be read
-        result.update({"checked": now, "lastmod_seen": pages[url]})
+        result.update({"checked": now, "lastmod_seen": pages[url], "v": VERSION})
         cache[url] = result
         if i % 50 == 0:
             save()

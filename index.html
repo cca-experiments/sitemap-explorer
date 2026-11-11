@@ -804,6 +804,20 @@ const GROUPS = [
   { name: 'Territory labels (TAS, NT)', slugs: ['tas', 'nt'] }
 ];
 const OTHER_GROUP = 'Other (not yet categorised)';
+// Fixed names for the Homepage and top-level sections, matching the main menu.
+// Page headings for these are often campaign slogans, so they are not used as names here.
+const TOP_LABELS = {
+  '/': 'Homepage',
+  'types-of-cancer': 'Types of cancer', 'cancer-information': 'Cancer information', 'support-and-services': 'Support services',
+  'get-involved': 'Get involved', 'shop-with-us': 'Shop with us', 'about-us': 'About us', 'health-professionals': 'For health professionals',
+  'policy-and-advocacy': 'Policy and advocacy', 'accessibility': 'Accessibility', 'disclaimer': 'Disclaimer', 'privacy-policy': 'Privacy policy',
+  'privacy-collection-statement': 'Privacy collection statement',
+  'privacy-collection-statement-donations-fundraising': 'Privacy collection statement: donations and fundraising',
+  'recall-statement': 'Recall statement',
+  'bowelscreening': 'Bowel screening', 'end-the-trend': 'End the Trend', 'save-your-skin': 'Save Your Skin',
+  'nscaw2026': 'National Skin Cancer Action Week 2026', 'iheard': 'iHeard', 'unmasking-big-tobacco': 'Unmasking Big Tobacco',
+  'tas': 'Cancer Council Tasmania', 'nt': 'Cancer Council Northern Territory'
+};
 // Pages that are top-level in the main menu but sit deeper in the URL. They are shown at the top level.
 const PROMOTE = ['/get-involved/shop-with-us', '/about-us/policy-and-advocacy'];
 function groupTopLevel(root) {
@@ -820,6 +834,9 @@ function groupTopLevel(root) {
     root.children.push(hit.n);
   });
   const slugOf = n => { const segs = (n.raw || '').split('/').filter(Boolean); return (n.promoted ? segs[segs.length - 1] : segs[0]) || ''; };
+  const label = (n, key) => { if (TOP_LABELS[key] && n.name !== TOP_LABELS[key]) { n.heading = n.name; n.name = TOP_LABELS[key]; } };
+  label(root, '/');
+  root.children.forEach(c => label(c, slugOf(c)));
   const groups = GROUPS.map(g => ({ name: g.name, group: true, children: [], slugs: g.slugs }));
   const other = { name: OTHER_GROUP, group: true, children: [], slugs: [] };
   root.children.forEach(c => {
@@ -859,7 +876,8 @@ function select(d) {
   if (d.data.check) {
     const c = d.data.check;
     add('Page check', c.problem ? (c.problem === 'Redirects' ? 'Redirects to ' + (c.redirects_to || 'another page') : c.problem) : `Loads (checked ${fmtDate(c.checked)})`);
-    if (c.tab_title && c.tab_title !== d.data.name) add('Browser tab title', c.tab_title);
+    if (d.data.heading) add('Page heading', d.data.heading);
+    if (c.tab_title && c.tab_title !== d.data.name && c.tab_title !== d.data.heading) add('Browser tab title', c.tab_title);
   } else if (d.data.inSitemap) add('Page check', 'Not checked yet');
   if (badgeText(d.data)) add('Site version', badgeText(d.data).replace('/', ' and '));
   if (d.data.notes) add('Note in sheet', d.data.notes.join('; '));
