@@ -1,0 +1,505 @@
+{
+ "fetched": "2026-11-11T04:28:04+00:00",
+ "sources": [
+  "/types-of-cancer"
+ ],
+ "connect_sitemap": "https://connect.cancer.org.au/sitemap.xml",
+ "links": [
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/bowel-cancer",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer",
+   "names": [
+    "Bowel cancer"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/",
+     "lastmod": "2026-08-03T04:37:01+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/about/",
+     "lastmod": "2026-09-16T01:05:33+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/diagnosis/",
+     "lastmod": "2026-09-16T01:06:38+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/diagnosis/screening",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/diagnosis/screening/",
+     "lastmod": "2026-09-16T01:07:02+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/diagnosis/staging",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/diagnosis/staging/",
+     "lastmod": "2026-09-16T01:07:36+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/diagnosis/tests",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/diagnosis/tests/",
+     "lastmod": "2026-09-16T01:07:21+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/life-after-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/life-after-treatment/",
+     "lastmod": "2026-08-03T04:29:54+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/question-checklist",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/question-checklist/",
+     "lastmod": "2026-10-13T22:45:52+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/side-effects",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/side-effects/",
+     "lastmod": "2026-09-24T01:04:22+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/side-effects/bowel-and-dietary-changes",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/side-effects/bowel-and-dietary-changes/",
+     "lastmod": "2026-09-24T01:04:41+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/side-effects/having-a-stoma",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/side-effects/having-a-stoma/",
+     "lastmod": "2026-09-24T01:04:55+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/symptoms",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/symptoms/",
+     "lastmod": "2026-09-16T01:06:18+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/treatment/",
+     "lastmod": "2026-09-16T01:08:34+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/treatment-advanced",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/treatment-advanced/",
+     "lastmod": "2026-09-16T01:09:38+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/treatment/chemotherapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/treatment/chemotherapy/",
+     "lastmod": "2026-09-16T01:09:23+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/treatment/radiation-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/treatment/radiation-therapy/",
+     "lastmod": "2026-09-16T01:09:06+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/bowel-cancer/treatment/surgery",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/treatment/surgery/",
+     "lastmod": "2026-09-16T01:08:52+00:00"
+    }
+   ]
+  },
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/breast-cancer",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer",
+   "names": [
+    "Breast cancer"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/",
+     "lastmod": "2026-08-13T23:29:21+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/about/",
+     "lastmod": "2026-09-01T04:42:41+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/diagnosis/",
+     "lastmod": "2026-08-19T05:33:31+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/life-after-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/life-after-treatment/",
+     "lastmod": "2026-08-19T05:43:07+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/question-checklist",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/question-checklist/",
+     "lastmod": "2026-08-19T05:20:27+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/side-effects",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/side-effects/",
+     "lastmod": "2026-08-19T05:40:03+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/symptoms",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/symptoms/",
+     "lastmod": "2026-08-19T05:28:55+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/",
+     "lastmod": "2026-08-19T05:36:05+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/advanced",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/advanced/",
+     "lastmod": "2026-08-19T06:04:02+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/chemotherapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/chemotherapy/",
+     "lastmod": "2026-08-19T05:55:12+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/hormone-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/hormone-therapy/",
+     "lastmod": "2026-08-19T06:03:54+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/immunotherapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/immunotherapy/",
+     "lastmod": "2026-08-19T05:58:40+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/radiation-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/radiation-therapy/",
+     "lastmod": "2026-08-31T02:38:37+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/surgery",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/surgery/",
+     "lastmod": "2026-08-31T02:38:32+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/breast-cancer/treatment/targeted-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/breast-cancer/treatment/targeted-therapy/",
+     "lastmod": "2026-08-31T02:38:54+00:00"
+    }
+   ]
+  },
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/head-and-neck",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck",
+   "names": [
+    "Head and neck cancers",
+    "Mouth cancer"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/",
+     "lastmod": "2026-08-20T23:32:36+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/about/",
+     "lastmod": "2026-08-21T00:37:18+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/diagnosis/",
+     "lastmod": "2026-08-21T00:39:26+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/diagnosis/tests",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/diagnosis/tests/",
+     "lastmod": "2026-10-20T00:02:32+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/life-after-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/life-after-treatment/",
+     "lastmod": "2026-08-21T00:42:41+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/question-checklist",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/question-checklist/",
+     "lastmod": "2026-08-21T00:43:01+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/side-effects",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/side-effects/",
+     "lastmod": "2026-08-21T00:42:18+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/symptoms",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/symptoms/",
+     "lastmod": "2026-08-21T00:39:06+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/treatment/",
+     "lastmod": "2026-08-21T00:40:04+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/treatment/drug-therapies",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/treatment/drug-therapies/",
+     "lastmod": "2026-08-21T00:41:46+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/treatment/radiation-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/treatment/radiation-therapy/",
+     "lastmod": "2026-08-21T00:41:18+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/head-and-neck/treatment/surgery",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/head-and-neck/treatment/surgery/",
+     "lastmod": "2026-08-21T00:40:31+00:00"
+    }
+   ]
+  },
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/lymphoma",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma",
+   "names": [
+    "Lymphoma"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/",
+     "lastmod": "2026-09-03T23:15:03+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/about/",
+     "lastmod": "2026-09-03T23:12:50+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/diagnosis/",
+     "lastmod": "2026-09-03T23:13:15+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/diagnosis/tests",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/diagnosis/tests/",
+     "lastmod": "2026-09-04T01:01:05+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/life-after-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/life-after-treatment/",
+     "lastmod": "2026-09-03T23:14:09+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/question-checklist",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/question-checklist/",
+     "lastmod": "2026-09-04T02:29:21+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/symptoms",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/symptoms/",
+     "lastmod": "2026-09-03T23:12:59+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/treatment/",
+     "lastmod": "2026-09-03T23:13:30+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/treatment/chemotherapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/treatment/chemotherapy/",
+     "lastmod": "2026-09-04T01:01:24+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/treatment/other-drug-therapies",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/treatment/other-drug-therapies/",
+     "lastmod": "2026-09-04T01:02:17+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/treatment/radiation-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/treatment/radiation-therapy/",
+     "lastmod": "2026-09-04T01:01:56+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/lymphoma/treatment/stem-cell-transplant",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/treatment/stem-cell-transplant/",
+     "lastmod": "2026-09-04T01:02:32+00:00"
+    }
+   ]
+  },
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/melanoma",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma",
+   "names": [
+    "Melanoma"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/",
+     "lastmod": "2026-08-28T00:06:40+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/about/",
+     "lastmod": "2026-08-28T00:00:34+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/diagnosis/",
+     "lastmod": "2026-08-28T00:01:27+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/diagnosis/tests",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/diagnosis/tests/",
+     "lastmod": "2026-08-28T00:01:41+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/life-after-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/life-after-treatment/",
+     "lastmod": "2026-08-27T23:21:13+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/question-checklist",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/question-checklist/",
+     "lastmod": "2026-08-28T00:03:45+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/signs-and-risk-factors",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/signs-and-risk-factors/",
+     "lastmod": "2026-08-28T00:00:54+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/sun-protection",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/sun-protection/",
+     "lastmod": "2026-08-28T00:03:05+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/treatment/",
+     "lastmod": "2026-08-28T00:02:09+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/melanoma/treatment-advanced",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/treatment-advanced/",
+     "lastmod": "2026-08-28T00:02:35+00:00"
+    }
+   ]
+  },
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/prostate-cancer",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer",
+   "names": [
+    "Prostate cancer"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/",
+     "lastmod": "2026-08-27T00:43:47+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/about/",
+     "lastmod": "2026-08-27T02:03:35+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/diagnosis/",
+     "lastmod": "2026-08-27T02:04:03+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/diagnosis/tests",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/diagnosis/tests/",
+     "lastmod": "2026-08-27T02:04:20+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/life-after-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/life-after-treatment/",
+     "lastmod": "2026-08-27T02:06:03+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/",
+     "lastmod": "2026-08-27T02:04:34+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/advanced-prostate-cancer",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/advanced-prostate-cancer/",
+     "lastmod": "2026-09-01T04:50:05+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/androgen-deprivation-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/androgen-deprivation-therapy/",
+     "lastmod": "2026-08-27T02:05:15+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/radiation-therapy",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/radiation-therapy/",
+     "lastmod": "2026-08-27T02:05:03+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/surgery",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/management-and-treatment/surgery/",
+     "lastmod": "2026-08-27T02:04:49+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/question-checklist",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/question-checklist/",
+     "lastmod": "2026-08-27T02:06:19+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/side-effects",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/side-effects/",
+     "lastmod": "2026-08-27T02:05:52+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/prostate-cancer/symptoms",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/symptoms/",
+     "lastmod": "2026-08-27T02:03:52+00:00"
+    }
+   ]
+  },
+  {
+   "source": "/types-of-cancer",
+   "target": "/cancer-information/types-of-cancer/stomach-cancer",
+   "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer",
+   "names": [
+    "Stomach cancer"
+   ],
+   "pages": [
+    {
+     "path": "/cancer-information/types-of-cancer/stomach-cancer",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/",
+     "lastmod": "2026-08-27T00:03:31+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/stomach-cancer/about",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/about/",
+     "lastmod": "2026-09-01T04:52:25+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/stomach-cancer/diagnosis",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/diagnosis/",
+     "lastmod": "2026-08-27T00:13:09+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/stomach-cancer/side-effects",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/side-effects/",
+     "lastmod": "2026-09-03T00:46:05+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/stomach-cancer/symptoms",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/symptoms/",
+     "lastmod": "2026-08-27T00:12:32+00:00"
+    },
+    {
+     "path": "/cancer-information/types-of-cancer/stomach-cancer/treatment",
+     "url": "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/treatment/",
+     "lastmod": "2026-08-27T00:13:34+00:00"
+    }
+   ]
+  }
+ ]
+}
