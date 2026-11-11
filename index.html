@@ -408,7 +408,11 @@ const layout = d3.tree().nodeSize([1, COL_W]).separation((a, b) => (a.h + b.h) /
 
 let root = null, all = [], uid = 0, selected = null, matches = [], matchIdx = 0;
 
-function load(data) {
+const nodeKey = d => (d.data.group ? 'group:' + d.data.name : (d.data.raw || d.data.url || d.data.name));
+// opts.expanded: set of node keys to open (keeps what the person had open)
+// opts.reveal:   function; matching pages get their parent sections opened
+// opts.keepView: leave the zoom and position as they are (the Homepage stays in the same place)
+function load(data, opts = {}) {
   root = d3.hierarchy(data, d => (d.children && d.children.length ? d.children : null));
   root.sum(() => 1);
   all = root.descendants();
@@ -421,7 +425,14 @@ function load(data) {
   document.getElementById('stats').textContent =
     `${(all.length - 1).toLocaleString()} pages · ${maxDepth} level${maxDepth === 1 ? '' : 's'} deep`;
   renderLegend(maxDepth);
-  setDepth(2, false); fitLeft();
+  if (opts.expanded) {
+    all.forEach(d => { if (d.kids) d.children = (d.depth === 0 || opts.expanded.has(nodeKey(d))) ? d.kids : null; });
+  } else {
+    all.forEach(d => { if (d.kids) d.children = d.depth < 2 ? d.kids : null; });
+  }
+  if (opts.reveal) all.forEach(d => { if (opts.reveal(d)) { let p = d.parent; while (p) { p.children = p.kids; p = p.parent; } } });
+  update(root);
+  if (!opts.keepView) fitLeft();
 }
 
 function renderLegend(maxDepth) {
@@ -457,7 +468,16 @@ function setDepth(n, refit) {
   if (refit) fit();
 }
 
-function toggle(d) { if (!d.kids) return; d.children = d.children ? null : d.kids; update(d); }
+// Run a change to the tree while keeping one page in the same place on screen
+function keepInPlace(d, change) {
+  const t0 = d3.zoomTransform(svg.node());
+  const sx = t0.applyX(d.y), sy = t0.applyY(d.x);
+  change();
+  const t1 = d3.zoomIdentity.translate(sx - t0.k * d.y, sy - t0.k * d.x).scale(t0.k);
+  const dur = root.descendants().length > 700 ? 0 : 250;
+  if (dur) svg.transition().duration(dur).call(zoom.transform, t1); else svg.call(zoom.transform, t1);
+}
+function toggle(d) { if (!d.kids) return; keepInPlace(d, () => { d.children = d.children ? null : d.kids; update(d); }); }
 
 const trunc = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 const linkPath = (s, t) => {
@@ -518,17 +538,18 @@ function update(source) {
 
 function viewSize() { const r = document.getElementById('main').getBoundingClientRect(); return [r.width, r.height]; }
 
+// Fit the whole open tree on screen, anchored on the left like the opening view
 function fit() {
   const nodes = root.descendants();
   const x0 = d3.min(nodes, d => d.x - d.h / 2) - 10, x1 = d3.max(nodes, d => d.x + d.h / 2) + 10;
-  const y0 = d3.min(nodes, d => d.y), y1 = d3.max(nodes, d => d.y) + BOX_W;
+  const y1 = d3.max(nodes, d => d.y) + BOX_W;
   const [w, h] = viewSize();
-  const k = Math.max(0.05, Math.min(1.2, (w - 60) / (y1 - y0), (h - 100) / (x1 - x0)));
-  const t = d3.zoomIdentity.translate(w / 2 - k * (y0 + y1) / 2, h / 2 - k * (x0 + x1) / 2).scale(k);
+  const top = 50, bottom = 60;
+  const k = Math.max(0.05, Math.min(1, (w - 80) / (y1 - root.y), (h - top - bottom) / (x1 - x0)));
+  const t = d3.zoomIdentity.translate(40 - k * root.y, top + (h - top - bottom) / 2 - k * (x0 + x1) / 2).scale(k);
   svg.transition().duration(300).call(zoom.transform, t);
 }
 
-// Place the tree near the left edge, vertically centred, so it unfolds to the right
 function fitLeft() {
   const nodes = root.descendants();
   const x0 = d3.min(nodes, d => d.x - d.h / 2) - 10, x1 = d3.max(nodes, d => d.x + d.h / 2) + 10;
@@ -551,17 +572,18 @@ let sourceData = null, view = 'all', loadNote = '';
 const VIEW_NAMES = { all:'All', national:'National' };
 
 function copyTree(n, extra) { return { ...n, ...extra, children: (n.children || []).map(c => copyTree(c, extra)) }; }
-function filterTree(n, v, isRoot) {
+// Every view keeps the same categories and top-level sections, so nothing appears to move or reorder.
+// Sections with nothing relevant to the chosen view stay in place, faded.
+function filterTree(n, v, isRoot, parentIsGroup) {
   const t = terrOf(n);
+  const keepAlways = isRoot || n.group || parentIsGroup;
+  const kids = (n.children || []).map(c => filterTree(c, v, false, !!n.group)).filter(Boolean);
   if (v === 'national') {
-    if (t.length && !isRoot) return null;
-    const kidsN = (n.children || []).map(c => filterTree(c, v)).filter(Boolean);
-    if (n.group && !kidsN.length) return null;
-    return { ...n, children: kidsN };
+    if (t.length && !isRoot) return keepAlways ? { ...n, context: true, children: [] } : null;
+    return { ...n, children: kids };
   }
   if (t.includes(v)) return copyTree(n, { context: false });
-  const kids = (n.children || []).map(c => filterTree(c, v)).filter(Boolean);
-  if (kids.length || isRoot) return { ...n, context: true, children: kids };
+  if (kids.length || keepAlways) return { ...n, context: !n.group, children: kids };
   return null;
 }
 function countNodes(n) { return 1 + (n.children || []).reduce((a, c) => a + countNodes(c), 0); }
@@ -587,7 +609,10 @@ function setData(tree) {
 function applyView() {
   document.querySelectorAll('#versions button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
   const data = view === 'all' ? sourceData : filterTree(sourceData, view, true);
-  load(data);
+  const firstLoad = !root;
+  const expanded = firstLoad ? null : new Set(all.filter(d => d.children).map(nodeKey));
+  const isTerritory = view !== 'all' && view !== 'national';
+  load(data, { expanded, keepView: !firstLoad, reveal: isTerritory ? (d => terrOf(d.data).includes(view)) : null });
   const statsEl = document.getElementById('stats');
   if (view === 'all') {
     const tagged = all.filter(d => d.depth > 0 && terrOf(d.data).length).length;
@@ -597,9 +622,8 @@ function applyView() {
   } else if (view === 'national') {
     statsEl.textContent = `National site: ${(all.length - 1).toLocaleString()} pages`;
   } else {
-    const own = all.filter(d => terrOf(d.data).includes(view) || (d.depth > 0 && !d.data.context)).length;
+    const own = all.filter(d => terrOf(d.data).includes(view) || (d.depth > 0 && !d.data.context && !d.data.group)).length;
     statsEl.textContent = `${view} site: ${own} pages · faded boxes are national pages shown for context`;
-    setDepth(99, true);
   }
   if (loadNote) statsEl.textContent += ' · ' + loadNote;
   renderLegend(d3.max(all, d => d.depth));
@@ -818,14 +842,15 @@ document.getElementById('pExpand').onclick = () => {
   if (!selected) return;
   selected.descendants().forEach(n => { n.children = n.kids; });
   // descendants() only walks open branches, so walk the full list too
-  all.forEach(n => { if (n.kids && n.ancestors().includes(selected)) n.children = n.kids; });
-  update(selected);
+  keepInPlace(selected, () => { all.forEach(n => { if (n.kids && n.ancestors().includes(selected)) n.children = n.kids; }); update(selected); });
 };
 document.getElementById('pCollapse').onclick = () => {
   if (!selected) return;
-  all.forEach(n => { if (n.kids && n !== selected && n.ancestors().includes(selected)) n.children = null; });
-  selected.children = null;
-  update(selected);
+  keepInPlace(selected, () => {
+    all.forEach(n => { if (n.kids && n !== selected && n.ancestors().includes(selected)) n.children = null; });
+    selected.children = null;
+    update(selected);
+  });
 };
 
 /* ---------- Search ---------- */
@@ -841,7 +866,6 @@ function runSearch() {
   matches = [];
   if (q.length < 2) { qCount.textContent = ''; update(root); return; }
   all.forEach(d => { if (d.depth > 0 && (d.data.name + ' ' + (d.data.raw || '') + ' ' + (d.data.tags || []).join(' ')).toLowerCase().includes(q)) { d.match = true; matches.push(d); } });
-  all.forEach(d => { if (d.kids) d.children = d.depth < 1 ? d.kids : null; });
   matches.forEach(m => { let p = m.parent; while (p) { p.children = p.kids; p = p.parent; } });
   update(root);
   matchIdx = 0;
@@ -854,7 +878,7 @@ function showMatch() {
 }
 
 /* ---------- Controls ---------- */
-document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => { setDepth(+b.dataset.depth + 1, false); fitLeft(); });
+document.querySelectorAll('[data-depth]').forEach(b => b.onclick = () => setDepth(+b.dataset.depth + 1, false));
 document.getElementById('fit').onclick = fit;
 document.getElementById('sampleBtn').onclick = () => { loadNote = 'sample data'; setData(buildTree(sampleRows())); };
 
@@ -901,7 +925,10 @@ document.getElementById('pasteGo').onclick = () => {
 
 // Keep the opening view fitted while the page settles (fonts loading, header wrapping, window resizing),
 // until the person drags or zooms the tree themselves.
-const refitView = () => { if (!root || userMoved) return; (view === 'all' || view === 'national') ? fitLeft() : fit(); };
+const refitView = () => { if (!root || userMoved) return; fitLeft(); };
+// Once the person uses any control or clicks the tree, stop re-fitting automatically
+document.querySelector('header').addEventListener('click', () => { userMoved = true; }, true);
+document.getElementById('svg').addEventListener('click', () => { userMoved = true; }, true);
 if (window.ResizeObserver) new ResizeObserver(refitView).observe(document.getElementById('main'));
 else window.addEventListener('resize', refitView);
 
