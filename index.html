@@ -129,6 +129,7 @@
    SHEET_CSV_URL: the IA Google Sheet ("Publish to web" CSV link). Used for page titles,
    TAS/NT tags and the "In IA sheet" comparison. Leave empty to skip. */
 const SITEMAP_JSON = 'data/sitemap.json';
+const CONNECT_JSON = 'data/connect.json';   // Cancer Connect pages linked from cancer.org.au
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQMJtMUMnxWwtMgzKg1oVP4faKt0VIIT8aLSkfLFbudAPy5rej7ixpgEcevEcZqEsTTu_KuYVjZPaHL/pub?gid=630510010&single=true&output=csv';
 /* ==================== */
 
@@ -183,8 +184,8 @@ const LEVELS = [
 const lv = d => LEVELS[Math.min(d, LEVELS.length - 1)];
 const TERR_COLOURS = { TAS:'#1f7a4d', NT:'#c2581b' };
 const terrOf = n => (n.tags || []).flatMap(t => t.split('/')).map(t => t.trim().toUpperCase()).filter(Boolean);
-const badgeText = n => [...new Set(terrOf(n))].join('/');
-const badgeColour = n => { const t = [...new Set(terrOf(n))]; return t.length === 1 ? (TERR_COLOURS[t[0]] || '#555') : '#5b4bb7'; };
+const badgeText = n => (n.external ? 'CONNECT' : [...new Set(terrOf(n))].join('/'));
+const badgeColour = n => { if (n.external) return '#5b3fa8'; const t = [...new Set(terrOf(n))]; return t.length === 1 ? (TERR_COLOURS[t[0]] || '#555') : '#5b4bb7'; };
 const badgeCtx = document.createElement('canvas').getContext('2d');
 const badgeW = n => { const t = badgeText(n); if (!t) return 0; badgeCtx.font = '700 9px Inter, system-ui, sans-serif'; return Math.ceil(badgeCtx.measureText(t).width + t.length * 0.3 + 12); };
 
@@ -425,7 +426,7 @@ function load(data) {
 function renderLegend(maxDepth) {
   const el = document.getElementById('legend'); el.innerHTML = '';
   if (colourMode !== 'level') {
-    const items = colourMode === 'age' ? [...AGE_BINS, NO_DATE] : [IA_STYLES.yes, IA_STYLES.no, IA_STYLES.folder];
+    const items = colourMode === 'age' ? [...AGE_BINS, NO_DATE] : [IA_STYLES.yes, IA_STYLES.no, IA_STYLES.external, IA_STYLES.folder];
     items.forEach(it => {
       const n = all.filter(d => nodeStyle(d) === it).length;
       const s = document.createElement('span'); const sw = document.createElement('b'); sw.className = 'sw';
@@ -484,7 +485,7 @@ function update(source) {
   chip.append('text').attr('x', 17).attr('y', 11.5);
 
   const merged = enter.merge(node);
-  merged.classed('folder', d => !d.data.inSitemap && !d.data.group).classed('match', d => d.match).classed('selected', d => d === selected).classed('context', d => !!d.data.context);
+  merged.classed('folder', d => !d.data.inSitemap && !d.data.group && !(d.data.external && d.data.lastmod)).classed('match', d => d.match).classed('selected', d => d === selected).classed('context', d => !!d.data.context);
   merged.select('g.badge').style('display', d => (badgeText(d.data) ? null : 'none')).attr('transform', d => `translate(8,${-d.h / 2 + PAD_Y + 0.5})`);
   merged.select('g.badge rect').attr('width', d => badgeW(d.data)).attr('fill', d => badgeColour(d.data));
   merged.select('g.badge text').attr('x', d => badgeW(d.data) / 2).text(d => badgeText(d.data));
@@ -590,7 +591,8 @@ function applyView() {
   if (view === 'all') {
     const tagged = all.filter(d => d.depth > 0 && terrOf(d.data).length).length;
     const inSm = all.filter(d => d.data.inSitemap).length, notIA = all.filter(d => d.data.inSitemap && !d.data.inIA).length;
-    statsEl.textContent = `${inSm.toLocaleString()} pages in sitemap · ${notIA} not in IA sheet` + (tagged ? ` · ${tagged} territory pages` : '');
+    const ext = all.filter(d => d.data.external && d.data.lastmod).length;
+    statsEl.textContent = `${inSm.toLocaleString()} pages in sitemap · ${notIA} not in IA sheet` + (ext ? ` · ${ext} Cancer Connect pages linked` : '') + (tagged ? ` · ${tagged} territory pages` : '');
   } else if (view === 'national') {
     statsEl.textContent = `National site: ${(all.length - 1).toLocaleString()} pages`;
   } else {
@@ -617,6 +619,7 @@ const NO_DATE = { label: 'Not in sitemap / no date', fill: '#ffffff', stroke: '#
 const IA_STYLES = {
   yes:    { label: 'In IA sheet',        fill: '#e3f4e1', stroke: '#8cc489', text: '#18381a' },
   no:     { label: 'Not in IA sheet',    fill: '#fde4e1', stroke: '#e07a70', text: '#4d1a14' },
+  external: { label: 'Cancer Connect page', fill: '#efe9fb', stroke: '#a58fd6', text: '#2c1a52' },
   folder: { label: 'Folder only (not in sitemap)', fill: '#ffffff', stroke: '#b9c1cc', text: '#5f6b7a' }
 };
 const TODAY = new Date();
@@ -625,7 +628,7 @@ function ageBin(n) { const a = ageDays(n); return a == null ? NO_DATE : AGE_BINS
 function nodeStyle(d) {
   if (d.data.group) return GROUP_STYLE;
   if (colourMode === 'age') return ageBin(d.data);
-  if (colourMode === 'ia') return !d.data.inSitemap ? IA_STYLES.folder : d.data.inIA ? IA_STYLES.yes : IA_STYLES.no;
+  if (colourMode === 'ia') return d.data.external ? IA_STYLES.external : !d.data.inSitemap ? IA_STYLES.folder : d.data.inIA ? IA_STYLES.yes : IA_STYLES.no;
   return lv(levelOf(d));
 }
 function fmtDate(v) { const t = new Date(v); return isNaN(t) ? '' : t.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); }
@@ -657,7 +660,7 @@ function urlTerritories(path) {
   segs.forEach(s => { if (s === 'tas' || /-tas$/.test(s)) out.add('TAS'); if (s === 'nt' || /-nt$/.test(s)) out.add('NT'); });
   return [...out];
 }
-function buildFromSitemap(pages, ia) {
+function buildFromSitemap(pages, ia, connect) {
   const first = pages[0] ? new URL(pages[0].url) : new URL('https://www.cancer.org.au/');
   const origin = first.origin;
   const root = { name: 'Homepage', url: origin + '/', raw: '/', children: [], inSitemap: false };
@@ -674,7 +677,30 @@ function buildFromSitemap(pages, ia) {
     });
     node.inSitemap = true; node.lastmod = p.lastmod || null; node.url = p.url;
   });
+  // Cancer Connect sections linked from cancer.org.au pages
+  (connect && connect.links || []).forEach(link => {
+    const source = byPath.get(String(link.source).toLowerCase().replace(/\/+$/, ''));
+    if (!source) return;
+    const base = link.target.replace(/\/+$/, '');
+    const top = { name: link.names[0] || slugLabel(base.split('/').pop()), url: link.url, raw: link.url, external: 'connect',
+      linkedFrom: link.source, alsoCalled: link.names.slice(1), children: [], lastmod: null };
+    const local = new Map([[base.toLowerCase(), top]]);
+    link.pages.forEach(p => {
+      if (p.path.replace(/\/+$/, '').toLowerCase() === base.toLowerCase()) { top.lastmod = p.lastmod; return; }
+      const rest = p.path.slice(base.length).split('/').filter(Boolean);
+      let node = top, path = base;
+      rest.forEach(seg => {
+        path += '/' + seg;
+        let n = local.get(path.toLowerCase());
+        if (!n) { n = { name: slugLabel(seg), url: 'https://connect.cancer.org.au' + path, raw: 'connect.cancer.org.au' + path, external: 'connect', children: [], lastmod: null }; local.set(path.toLowerCase(), n); node.children.push(n); }
+        node = n;
+      });
+      node.lastmod = p.lastmod; node.url = p.url;
+    });
+    source.children.push(top);
+  });
   const walk = n => {
+    if (n.external) { n.children.sort((a, b) => a.name.localeCompare(b.name)); n.children.forEach(walk); return; }
     const m = ia.get(normUrl(n.url));
     n.inIA = !!m;
     if (m) { if (m.title) n.name = m.title; if (m.tags) n.tags = m.tags; }
@@ -727,9 +753,14 @@ function select(d) {
   };
   if (d.data.group) add('Category', 'Grouping in this tool, not a page');
   else add('Level', d.depth === 0 ? 'Top' : String(levelOf(d)));
-  if (d.data.inSitemap) add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'No date in sitemap');
-  else add('In sitemap', 'No. This is a folder in the URL, not a page in the sitemap');
-  if (d.data.inSitemap) add('In IA sheet', d.data.inIA ? 'Yes' : 'No');
+  if (d.data.external) {
+    add('Site', 'Cancer Connect (connect.cancer.org.au), not cancer.org.au');
+    if (d.data.linkedFrom) add('Linked from', 'cancer.org.au' + d.data.linkedFrom);
+    if (d.data.alsoCalled && d.data.alsoCalled.length) add('Also linked as', d.data.alsoCalled.join(', '));
+    add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'Not in the Cancer Connect sitemap');
+  } else if (d.data.inSitemap) add('Last updated', d.data.lastmod ? `${fmtDate(d.data.lastmod)} (${fmtAge(ageDays(d.data))})` : 'No date in sitemap');
+  else if (!d.data.group) add('In sitemap', 'No. This is a folder in the URL, not a page in the sitemap');
+  if (d.data.inSitemap && !d.data.external) add('In IA sheet', d.data.inIA ? 'Yes' : 'No');
   if (badgeText(d.data)) add('Site version', badgeText(d.data).replace('/', ' and '));
   if (d.data.notes) add('Note in sheet', d.data.notes.join('; '));
   if (d.data.context) add('Shown because', 'National page above a ' + view + ' page');
@@ -843,6 +874,8 @@ async function loadFromSheet() {
   statsEl.textContent = 'Loading sitemap…';
   try {
     const sm = await (await fetch(SITEMAP_JSON + '?t=' + Date.now(), { cache: 'no-store' })).json();
+    let connect = null;
+    try { const r = await fetch(CONNECT_JSON + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) connect = await r.json(); } catch (e) { /* Connect data is optional */ }
     const ia = new Map();
     if (SHEET_CSV_URL) {
       try {
@@ -853,7 +886,7 @@ async function loadFromSheet() {
       } catch (e) { console.warn('IA sheet not loaded', e); }
     }
     loadNote = `sitemap checked ${fmtDate(sm.fetched)}` + (ia.size ? '' : ' · IA sheet not loaded');
-    setData(buildFromSitemap(sm.pages, ia));
+    setData(buildFromSitemap(sm.pages, ia, connect));
   } catch (err) {
     statsEl.textContent = 'Could not load the sitemap data (' + err.message + ').';
   }
