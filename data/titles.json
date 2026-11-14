@@ -4114,14 +4114,6 @@
 "title": "Jobs",
 "v": 2
 },
-"https://www.cancer.org.au/about-us/work-with-us/jobs/cct-qt-04-2026": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-11-06T01:19:35.000Z",
-"status": 200,
-"tab_title": "Lead - Cessation Services & Partnerships",
-"title": "QuitTas Lead - Cessation Services & Partnerships",
-"v": 2
-},
 "https://www.cancer.org.au/accessibility": {
 "checked": "2026-11-11T06:09:33+00:00",
 "lastmod_seen": "2026-11-11T05:57:47.000Z",
@@ -9301,5 +9293,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-13T00:01:57+00:00"
+"updated": "2026-11-14T00:16:14+00:00"
 }
