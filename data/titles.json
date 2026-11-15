@@ -7980,6 +7980,14 @@
 "title": "National Skin Cancer Action Week 2026",
 "v": 2
 },
+"https://www.cancer.org.au/nscaw2026/daily-draw-terms": {
+"checked": "2026-11-15T23:21:03+00:00",
+"lastmod_seen": "2026-11-15T22:02:43.000Z",
+"status": 200,
+"tab_title": "NSCAW Daily Giveaway Terms and Conditions {Cancer Information}",
+"title": "Terms and conditions",
+"v": 2
+},
 "https://www.cancer.org.au/nscaw2026/sun-safety": {
 "checked": "2026-11-11T06:09:33+00:00",
 "lastmod_seen": "2026-11-01T21:39:46.000Z",
@@ -9301,5 +9309,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-14T22:54:24+00:00"
+"updated": "2026-11-15T23:21:05+00:00"
 }
