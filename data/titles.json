@@ -4122,6 +4122,14 @@
 "title": "Jobs",
 "v": 2
 },
+"https://www.cancer.org.au/about-us/work-with-us/jobs/cca-dig-24-2026": {
+"checked": "2026-11-17T02:23:54+00:00",
+"lastmod_seen": "2026-11-16T03:13:01.000Z",
+"status": 200,
+"tab_title": "Social Media Manager",
+"title": "Social Media Manager",
+"v": 2
+},
 "https://www.cancer.org.au/accessibility": {
 "checked": "2026-11-11T06:09:33+00:00",
 "lastmod_seen": "2026-11-11T05:57:47.000Z",
@@ -9309,5 +9317,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-15T23:21:05+00:00"
+"updated": "2026-11-17T02:23:56+00:00"
 }
