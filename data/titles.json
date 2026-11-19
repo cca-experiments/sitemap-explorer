@@ -1561,8 +1561,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/about-us/news-and-media/media-releases/5-in-6-aussie-teens-not-meeting-the-recommended-guidelines-for-physical-activity": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-17T02:32:56.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "5 in 6 Aussie teens not meeting the recommended guidelines for physical activity",
 "title": "5 in 6 Aussie teens not meeting the recommended guidelines for physical activity",
@@ -1697,8 +1697,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/about-us/news-and-media/media-releases/cancer-council-applauds-us-ban-on-menthol-in-tobacco-calls-for-australia-to-follow": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-07T00:21:37.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "Cancer Council applauds US ban on menthol in tobacco, calls for Australia to follow",
 "title": "Cancer Council applauds US ban on menthol in tobacco, calls for Australia to follow",
@@ -1889,8 +1889,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/about-us/news-and-media/media-releases/cancer-council-warns-that-the-government-s-goals-for-smoking-prevalence-will-only-be-possible-with-ongoing-funding-to-tackle-indigenous-smoking": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-07T00:21:37.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "Cancer Council warns that achieving the government’s targets requires ongoing and long-term support",
 "title": "Cancer Council warns that the government’s goals for smoking prevalence will only be possible with ongoing funding to tackle Indigenous smoking",
@@ -2297,8 +2297,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/about-us/news-and-media/media-releases/new-research-shows-menthol-in-tobacco-products-keeps-smokers-hooked": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-07T00:21:37.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "New research shows menthol in tobacco products keeps smokers hooked",
 "title": "New research shows menthol in tobacco products keeps smokers hooked",
@@ -4491,8 +4491,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/diet-and-exercise": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:40.000Z",
 "status": 200,
 "tab_title": "Diet and exercise",
 "title": "Diet and exercise",
@@ -4691,8 +4691,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/family-history-and-cancer/genetic-testing": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-14T22:21:42.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:08.000Z",
 "status": 200,
 "tab_title": "Genetic testing",
 "title": "Genetic testing",
@@ -4987,72 +4987,80 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:56:53.000Z",
 "status": 200,
 "tab_title": "Workplace cancer",
 "title": "Workplace cancer",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/asbestos": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:35.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:57:16.000Z",
 "status": 200,
 "tab_title": "Asbestos",
 "title": "Asbestos",
 "v": 2
 },
+"https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/benzene": {
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:56:43.000Z",
+"status": 200,
+"tab_title": "Benzene",
+"title": "Benzene",
+"v": 2
+},
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/diesel": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:57:06.000Z",
 "status": 200,
 "tab_title": "Diesel",
 "title": "Diesel",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/silica-dust": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:56:36.000Z",
 "status": 200,
 "tab_title": "Silica dust",
 "title": "Silica dust",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/tobacco": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:57:29.000Z",
 "status": 200,
 "tab_title": "Tobacco",
 "title": "Tobacco",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/toolbox-resources": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:07:12.000Z",
 "status": 200,
 "tab_title": "Toolbox resources",
 "title": "Workplace Cancer Toolbox Resources",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/uv-radiation-at-work": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:57:40.000Z",
 "status": 200,
 "tab_title": "UV radiation at work",
 "title": "UV radiation at work",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/welding": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:56:49.000Z",
 "status": 200,
 "tab_title": "How does welding cause cancer?",
 "title": "Welding",
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/wood-products": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-28T00:21:36.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T02:56:59.000Z",
 "status": 200,
 "tab_title": "Wood products",
 "title": "Wood products",
@@ -5067,8 +5075,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/finding-and-preparing-for-cancer-appointments": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-20T00:21:33.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:43.000Z",
 "status": 200,
 "tab_title": "Finding and Preparing for Cancer Appointments",
 "title": "Finding and preparing for cancer appointments",
@@ -5091,8 +5099,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/finding-and-preparing-for-cancer-appointments/find-a-specialist": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-20T00:21:32.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:44.000Z",
 "status": 200,
 "tab_title": "Find a Specialist",
 "title": "Find a specialist",
@@ -5123,8 +5131,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/living-and-coping-with-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-22T00:23:45.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T23:32:10.000Z",
 "status": 200,
 "tab_title": "Living and Coping with Cancer",
 "title": "Living and coping with cancer",
@@ -6179,8 +6187,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/what-is-cancer/personal-cancer-stories/kirsty-wickens": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-22T04:13:22.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:43.000Z",
 "status": 200,
 "tab_title": "Kirsty Wickens",
 "title": "Kirsty Wickens",
@@ -6307,8 +6315,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/what-is-cancer/personal-cancer-stories/rizsa-miguel": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:46.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:08.000Z",
 "status": 200,
 "tab_title": "Rizsa Miguel",
 "title": "Rizsa Miguel",
@@ -6363,8 +6371,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/what-is-cancer/personal-cancer-stories/tas": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:18:46.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "Personal cancer stories - Cancer Council Tasmania",
 "title": "Personal cancer stories in Tasmania",
@@ -7493,16 +7501,16 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/can-taking-antioxidants-prevent-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Can taking antioxidants prevent cancer?",
 "title": "Can taking antioxidants prevent cancer?",
 "v": 2
 },
 "https://www.cancer.org.au/iheard/can-vegetable-seed-oils-cause-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:19:13.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:40.000Z",
 "status": 200,
 "tab_title": "Can vegetable/seed oils cause cancer?",
 "title": "Can vegetable/seed oils cause cancer?",
@@ -7525,8 +7533,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/do-all-cancer-patients-lose-a-lot-of-weight": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-28T03:21:39.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:43.000Z",
 "status": 200,
 "tab_title": "Do all cancer patients lose a lot of weight?",
 "title": "Do all cancer patients lose a lot of weight?",
@@ -7621,16 +7629,16 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/does-abortion-increase-breast-cancer-risk": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-28T07:21:42.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:08.000Z",
 "status": 200,
 "tab_title": "Does abortion increase breast cancer risk?",
 "title": "Does abortion increase breast cancer risk?",
 "v": 2
 },
 "https://www.cancer.org.au/iheard/does-asparagus-contain-cancer-preventing-vitamins": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:46.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:08.000Z",
 "status": 200,
 "tab_title": "Does asparagus contain cancer preventing vitamins?",
 "title": "Does asparagus contain cancer preventing vitamins?",
@@ -7653,8 +7661,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/does-drinking-milk-protect-you-from-toxic-welding-fumes": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:19:12.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "Does drinking milk protect you from toxic welding fumes?",
 "title": "Does drinking milk protect you from toxic welding fumes?",
@@ -7693,8 +7701,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/does-frankincense-oil-have-cancer-fighting-properties": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-14T22:21:42.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:08.000Z",
 "status": 200,
 "tab_title": "Does frankincense oil have cancer fighting properties?",
 "title": "Does frankincense oil have cancer fighting properties?",
@@ -7709,8 +7717,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/does-organic-food-prevent-or-cure-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Does organic food prevent or cure cancer?",
 "title": "Does organic food prevent or cure cancer?",
@@ -7797,8 +7805,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/i-heard-that-roll-your-own-cigarettes-are-more-natural-and-safe-is-that-true": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:19:12.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "I heard that roll-your-own cigarettes are more natural and safe – is that true?",
 "title": "I heard that roll-your-own cigarettes are more natural and safe – is that true?",
@@ -7813,16 +7821,16 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/iheard-quit-smoking-campaigns-dont-really-work": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:19:12.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:07.000Z",
 "status": 200,
 "tab_title": "iHeard Quit smoking campaigns don’t really work",
 "title": "iHeard Quit smoking campaigns don’t really work",
 "v": 2
 },
 "https://www.cancer.org.au/iheard/is-a-fasting-diet-beneficial-to-cancer-patients": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T03:22:06.000Z",
 "status": 200,
 "tab_title": "Is a fasting diet beneficial to cancer patients?",
 "title": "Is a fasting diet beneficial to cancer patients?",
@@ -7885,8 +7893,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/iheard/is-it-true-that-men-who-take-fish-oil-supplements-or-eat-fatty-fish-are-more-likely-to-develop-prostate-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Is it true men who take fish oil supplements or eat fatty fish are more likely to develop cancer?",
 "title": "Is it true men who take fish oil supplements or eat fatty fish are more likely to develop prostate cancer?",
@@ -7981,40 +7989,40 @@
 "v": 2
 },
 "https://www.cancer.org.au/nscaw2026": {
-"checked": "2026-11-18T01:32:30+00:00",
-"lastmod_seen": "2026-11-17T04:49:10.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T05:58:34.000Z",
 "status": 200,
 "tab_title": "National Skin Cancer Action Week 2026 | Combatting Australia’s ‘national cancer’",
 "title": "National Skin Cancer Action Week 2026",
 "v": 2
 },
 "https://www.cancer.org.au/nscaw2026/daily-draw-terms": {
-"checked": "2026-11-18T01:32:30+00:00",
-"lastmod_seen": "2026-11-17T23:58:35.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T06:01:19.000Z",
 "status": 200,
 "tab_title": "NSCAW Daily Giveaway Terms and Conditions {Cancer Information}",
 "title": "Terms and conditions",
 "v": 2
 },
 "https://www.cancer.org.au/nscaw2026/sun-safety": {
-"checked": "2026-11-18T01:32:30+00:00",
-"lastmod_seen": "2026-11-17T23:49:59.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T05:57:49.000Z",
 "status": 200,
 "tab_title": "Little Sid Seagull’s guide to sun safe habits",
 "title": "Little Sid Seagull’s guide to sun safe habits",
 "v": 2
 },
 "https://www.cancer.org.au/nscaw2026/win-little-sid-seagull": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-11-01T07:02:42.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T05:59:08.000Z",
 "status": 200,
 "tab_title": "WIN Little Sid Seagull plushies for your kids",
 "title": "WIN Little Sid Seagull plushies!",
 "v": 2
 },
 "https://www.cancer.org.au/nscaw2026/win-little-sid-seagull/terms-and-conditions": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-11-01T07:02:42.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-18T06:01:00.000Z",
 "status": 200,
 "tab_title": "Win Little Sid Seagull plushies Terms & Conditions",
 "title": "Terms and conditions",
@@ -8581,16 +8589,16 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/adenocarcinoma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:49.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:37.000Z",
 "status": 200,
 "tab_title": "Adenocarcinoma Cancer | Causes, Symptoms & Treatments",
 "title": "Adenocarcinoma",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/anal-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:49.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Anal Cancer | Causes, Symptoms & Treatments",
 "title": "Anal cancer",
@@ -8653,32 +8661,32 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/bone-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:50.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Bone Cancer | Causes, Symptoms & Treatments",
 "title": "Bone cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/brain-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:51.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Brain Cancer | Causes, Symptoms & Treatments",
 "title": "Brain cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/breast-cancer-in-men": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:47.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Breast Cancer in Men",
 "title": "Breast cancer in men",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/cancer-of-unknown-primary": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-22T03:49:20.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Cancer of unknown primary | Causes, Symptoms & Treatments",
 "title": "Cancer of unknown primary",
@@ -8773,8 +8781,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/hodgkin-lymphoma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:50.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:40.000Z",
 "status": 200,
 "tab_title": "Hodgkin Lymphoma | Causes, Symptoms & Treatments",
 "title": "Hodgkin lymphoma",
@@ -8797,8 +8805,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/liver-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T06:21:34.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Liver Cancer | Causes, Symptoms & Treatments",
 "title": "Liver cancer",
@@ -8965,40 +8973,40 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/myeloma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T06:21:33.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Myeloma | Causes, Symptoms & Treatments",
 "title": "Myeloma",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/non-hodgkin-lymphoma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T06:21:33.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Non-Hodgkin lymphoma | Causes, Symptoms & Treatments",
 "title": "Non-Hodgkin lymphoma",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/oesophageal-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T06:21:37.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Oesophageal Cancer | Causes, Symptoms & Treatments",
 "title": "Oesophageal cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/ovarian-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-14T22:21:43.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Ovarian cancer | Causes, Symptoms & Treatments",
 "title": "Ovarian cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/ovarian-cancer/after-a-diagnosis-of-ovarian-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-14T22:21:42.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "After a diagnosis of ovarian cancer",
 "title": "After a diagnosis of ovarian cancer",
@@ -9021,88 +9029,88 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/adenoid-cystic-carcinoma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T06:21:33.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Adenoid Cystic Carcinoma | Causes, Symptoms & Treatments",
 "title": "Adenoid cystic carcinoma",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/appendix-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:49.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Appendix cancer | Causes, Symptoms & Treatments",
 "title": "Appendix cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/eye-ocular-melanoma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:46.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Eye Ocular Melanoma | Causes, Symptoms & Treatments",
 "title": "Ocular (eye) melanoma",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/gallbladder-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:51.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:42.000Z",
 "status": 200,
 "tab_title": "Gallbladder cancer | Causes, Symptoms & Treatments",
 "title": "Gallbladder cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/neuroendocrine-tumours": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T06:21:34.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Neuroendocrine Tumours | Causes, Symptoms & Treatments",
 "title": "Neuroendocrine tumours",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/penile-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-28T03:21:38.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Penile cancer | Causes, Symptoms & Treatments",
 "title": "Penile cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/pseudomyxoma-peritonei": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:49.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:38.000Z",
 "status": 200,
 "tab_title": "Pseudomyxoma Peritonei | Causes, Symptoms & Treatments",
 "title": "Pseudomyxoma Peritonei (PMP)",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/small-bowel-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Small bowel cancer | Causes, Symptoms & Treatments",
 "title": "Small bowel cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/soft-tissue-sarcoma": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:57.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Soft Tissue Sarcoma | Causes, Symptoms & Treatments",
 "title": "Soft tissue sarcoma",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/rare-cancers/upper-tract-urothelial-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:56.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:40.000Z",
 "status": 200,
 "tab_title": "Upper tract urothelial cancer (UTUC) | Causes, Symptoms & Treatments",
 "title": "Upper tract urothelial cancer (UTUC)",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/secondary-bone-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:51.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Secondary Bone Cancer | Causes, Symptoms & Treatments",
 "title": "Secondary bone cancer",
@@ -9181,24 +9189,24 @@
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/testicular-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:55.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Testicular Cancer | Causes, Symptoms & Treatments",
 "title": "Testicular cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/throat-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-28T03:21:38.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Throat Cancer | Causes, Symptoms & Treatments",
 "title": "Throat cancer",
 "v": 2
 },
 "https://www.cancer.org.au/types-of-cancer/thyroid-cancer": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-10-05T23:21:56.000Z",
+"checked": "2026-11-19T01:01:57+00:00",
+"lastmod_seen": "2026-11-19T00:21:41.000Z",
 "status": 200,
 "tab_title": "Thyroid Cancer | Causes, Symptoms & Treatments",
 "title": "Thyroid cancer",
@@ -9317,5 +9325,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-18T01:32:35+00:00"
+"updated": "2026-11-19T01:04:16+00:00"
 }
