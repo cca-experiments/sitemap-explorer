@@ -1,9 +1,9 @@
 {
 "source": "https://www.cancer.org.au/sitemap.xml",
-"fetched": "2026-11-20T01:07:50+00:00",
-"count": 1080,
+"fetched": "2026-11-21T00:42:17+00:00",
+"count": 1081,
 "pages": [
-{"url": "https://www.cancer.org.au/", "lastmod": "2026-11-20T00:02:43.000Z"},
+{"url": "https://www.cancer.org.au/", "lastmod": "2026-11-20T02:59:11.000Z"},
 {"url": "https://www.cancer.org.au/about-us", "lastmod": "2026-11-06T01:12:30.000Z"},
 {"url": "https://www.cancer.org.au/about-us/about-cancer-council", "lastmod": "2026-11-06T01:05:15.000Z"},
 {"url": "https://www.cancer.org.au/about-us/about-cancer-council/act", "lastmod": "2026-11-08T22:12:29.000Z"},
@@ -190,6 +190,7 @@
 {"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/legislation-smoking-nicotine-addiction", "lastmod": "2026-09-04T03:18:55.000Z"},
 {"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/making-the-case-why-the-australian-health-system-needs-to-do-more-to-help-smokers-quit", "lastmod": "2026-08-07T00:21:37.000Z"},
 {"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/media-contacts", "lastmod": "2026-10-23T01:21:37.000Z"},
+{"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/melanoma-survival-reaches-record-high-but-non-melanoma-skin-cancer-remains-health-systems-biggest-cancer-cost-burden", "lastmod": "2026-11-20T05:31:24.000Z"},
 {"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/men-with-a-history-of-melanoma-have-higher-risk-of-prostate-cancer", "lastmod": "2026-09-04T03:18:55.000Z"},
 {"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/michael-klim-brad-hodge-sun-protection-video", "lastmod": "2026-08-07T05:21:41.000Z"},
 {"url": "https://www.cancer.org.au/about-us/news-and-media/media-releases/more-australians-surviving-cancer-than-ever-before-but-new-research-shows-the-hidden-legal-and-financial-cost-is-mounting", "lastmod": "2026-09-13T21:53:46.000Z"},

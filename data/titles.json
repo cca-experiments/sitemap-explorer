@@ -681,8 +681,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/": {
-"checked": "2026-11-20T01:07:51+00:00",
-"lastmod_seen": "2026-11-20T00:02:43.000Z",
+"checked": "2026-11-21T00:42:18+00:00",
+"lastmod_seen": "2026-11-20T02:59:11.000Z",
 "status": 200,
 "tab_title": "Cancer information and support",
 "title": "Sun safe habits last a lifetime",
@@ -2174,6 +2174,14 @@
 "status": 200,
 "tab_title": "Media contacts",
 "title": "Media contacts",
+"v": 2
+},
+"https://www.cancer.org.au/about-us/news-and-media/media-releases/melanoma-survival-reaches-record-high-but-non-melanoma-skin-cancer-remains-health-systems-biggest-cancer-cost-burden": {
+"checked": "2026-11-21T00:42:18+00:00",
+"lastmod_seen": "2026-11-20T05:31:24.000Z",
+"status": 200,
+"tab_title": "Melanoma survival reaches record high, but non-melanoma skin cancer remains health system's biggest cancer cost burden",
+"title": "Melanoma survival reaches record high, but non-melanoma skin cancer remains health system's biggest cancer cost burden",
 "v": 2
 },
 "https://www.cancer.org.au/about-us/news-and-media/media-releases/men-with-a-history-of-melanoma-have-higher-risk-of-prostate-cancer": {
@@ -9325,5 +9333,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-20T01:07:59+00:00"
+"updated": "2026-11-21T00:42:22+00:00"
 }
