@@ -681,11 +681,11 @@
 "v": 2
 },
 "https://www.cancer.org.au/": {
-"checked": "2026-11-21T00:42:18+00:00",
-"lastmod_seen": "2026-11-20T02:59:11.000Z",
+"checked": "2026-11-23T00:07:03+00:00",
+"lastmod_seen": "2026-11-22T13:02:45.000Z",
 "status": 200,
 "tab_title": "Cancer information and support",
-"title": "Sun safe habits last a lifetime",
+"title": "Bowel cancer waits for no one",
 "v": 2
 },
 "https://www.cancer.org.au/about-us": {
@@ -1734,6 +1734,14 @@
 "status": 200,
 "tab_title": "Cancer Council Australia and Quit warn against cheaper cigarettes and easier vape access",
 "title": "Cancer Council Australia and Quit warn plans to make cigarettes and vapes more accessible and affordable risks creating a new generation of nicotine addiction",
+"v": 2
+},
+"https://www.cancer.org.au/about-us/news-and-media/media-releases/cancer-council-australia-urges-diy-renovators-to-be-aware-of-the-dangers-of-asbestos-during-home-renovations": {
+"checked": "2026-11-23T00:07:03+00:00",
+"lastmod_seen": "2026-11-22T13:07:41.000Z",
+"status": 200,
+"tab_title": "Hidden in our homes: Cancer Council Australia urges DIY renovators to be aware of the dangers of asbestos during home renovations",
+"title": "Hidden in our homes: Cancer Council Australia urges DIY renovators to be aware of the dangers of asbestos during home renovations",
 "v": 2
 },
 "https://www.cancer.org.au/about-us/news-and-media/media-releases/cancer-council-australia-welcomes-10m-australian-government-investment-in-a-national-skin-cancer-prevention-campaign-this-national-skin-cancer-action-week": {
@@ -9333,5 +9341,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-21T23:44:03+00:00"
+"updated": "2026-11-23T00:07:07+00:00"
 }
