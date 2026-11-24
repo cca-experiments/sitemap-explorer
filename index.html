@@ -738,6 +738,21 @@ function urlTerritories(path) {
   segs.forEach(s => { if (s === 'tas' || /-tas$/.test(s)) out.add('TAS'); if (s === 'nt' || /-nt$/.test(s)) out.add('NT'); });
   return [...out];
 }
+/* Pages written in other languages (e.g. /bowelscreening/multilingual-resources/arabic) are named in English:
+   "Arabic: Bowel screening". The original heading is kept and shown when the page is clicked. */
+const LANGUAGE_NAMES = { 'chinese': 'Chinese (Mandarin)', 'traditional-chinese': 'Traditional Chinese (Cantonese)' };
+function languageName(n) {
+  const m = (n.raw || '').match(/\/multilingual-resources\/([^/]+)(?:\/([^/]+))?\/?$/i);
+  if (!m) return;
+  const lang = LANGUAGE_NAMES[m[1].toLowerCase()] || slugLabel(m[1]);
+  let topic = 'Bowel screening';
+  if (m[2]) {
+    const english = String(n.name || '').split('|')[0].trim();
+    topic = /^[\x00-\x7F]+$/.test(english) && english ? english.replace(/\?$/, '') : slugLabel(m[2]);
+  }
+  const label = `${lang}: ${topic}`;
+  if (n.name !== label) { n.heading = n.name; n.name = label; }
+}
 function buildFromSitemap(pages, titles, connect) {
   const first = pages[0] ? new URL(pages[0].url) : new URL('https://www.cancer.org.au/');
   const origin = first.origin;
@@ -780,6 +795,7 @@ function buildFromSitemap(pages, titles, connect) {
   const walk = n => {
     const t = titles[n.url];
     if (t) { n.check = t; if (t.title) n.name = t.title; }
+    languageName(n);
     if (!n.external) {
       const terr = [...new Set([...urlTerritories(n.raw || ''), ...titleTerritories(n.name)])];
       if (terr.length) n.tags = [terr.join('/')];
