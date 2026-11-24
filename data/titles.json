@@ -1,8 +1,8 @@
 {
 "pages": {
 "https://connect.cancer.org.au/cancer-information/types-of-cancer/bowel-cancer/": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-03T04:37:01+00:00",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T00:53:06+00:00",
 "status": 200,
 "tab_title": "Bowel cancer",
 "title": "Bowel cancer",
@@ -353,8 +353,8 @@
 "v": 2
 },
 "https://connect.cancer.org.au/cancer-information/types-of-cancer/lymphoma/": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-03T23:15:03+00:00",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T01:03:42+00:00",
 "status": 200,
 "tab_title": "Lymphoma",
 "title": "Lymphoma",
@@ -449,8 +449,8 @@
 "v": 2
 },
 "https://connect.cancer.org.au/cancer-information/types-of-cancer/melanoma/": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-28T00:06:40+00:00",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T01:04:23+00:00",
 "status": 200,
 "tab_title": "Melanoma",
 "title": "Melanoma",
@@ -529,8 +529,8 @@
 "v": 2
 },
 "https://connect.cancer.org.au/cancer-information/types-of-cancer/prostate-cancer/": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-27T00:43:47+00:00",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T01:07:06+00:00",
 "status": 200,
 "tab_title": "Prostate cancer",
 "title": "Prostate cancer",
@@ -633,8 +633,8 @@
 "v": 2
 },
 "https://connect.cancer.org.au/cancer-information/types-of-cancer/stomach-cancer/": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-08-27T00:03:31+00:00",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T01:09:01+00:00",
 "status": 200,
 "tab_title": "Stomach cancer",
 "title": "Stomach cancer",
@@ -5019,8 +5019,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/cancer-information/causes-and-prevention/workplace-cancer/benzene": {
-"checked": "2026-11-19T01:01:57+00:00",
-"lastmod_seen": "2026-11-18T02:56:43.000Z",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T21:53:14.000Z",
 "status": 200,
 "tab_title": "Benzene",
 "title": "Benzene",
@@ -6821,8 +6821,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/get-involved/fundraising-and-events/gala-events": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:18:49.000Z",
+"checked": "2026-11-24T04:14:36+00:00",
+"lastmod_seen": "2026-11-23T21:26:24.000Z",
 "status": 200,
 "tab_title": "Gala Events",
 "title": "Gala events in Tasmania",
@@ -9341,5 +9341,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-23T00:07:07+00:00"
+"updated": "2026-11-24T04:14:51+00:00"
 }
