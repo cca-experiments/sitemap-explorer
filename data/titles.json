@@ -721,11 +721,11 @@
 "v": 2
 },
 "https://www.cancer.org.au/about-us/about-cancer-council/australia/annual-report": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-11-10T05:39:29.000Z",
+"checked": "2026-11-25T02:58:25+00:00",
+"lastmod_seen": "2026-11-25T02:03:53.000Z",
 "status": 200,
 "tab_title": "Annual Review",
-"title": "Cancer Council Australia’s Annual Review 2024-25",
+"title": "Cancer Council Australia’s Annual Review 2025-26",
 "v": 2
 },
 "https://www.cancer.org.au/about-us/about-cancer-council/australia/board-and-governance": {
@@ -8085,8 +8085,8 @@
 "v": 2
 },
 "https://www.cancer.org.au/save-your-skin": {
-"checked": "2026-11-11T06:09:33+00:00",
-"lastmod_seen": "2026-09-04T03:19:08.000Z",
+"checked": "2026-11-25T02:58:25+00:00",
+"lastmod_seen": "2026-11-25T01:13:52.000Z",
 "status": 200,
 "tab_title": "Are You SunSmart? Learn How To Save Your Skin",
 "title": "How SunSmart are you really?",
@@ -9341,5 +9341,5 @@
 "v": 2
 }
 },
-"updated": "2026-11-24T04:14:51+00:00"
+"updated": "2026-11-25T02:58:28+00:00"
 }
